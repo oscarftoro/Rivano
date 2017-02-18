@@ -1,0 +1,41 @@
+﻿%{
+ (* File Fun/FunPar.fsy 
+    Parser for a small First Order Logic Language;
+    osto@itu.dk * 2016-02-06
+  *)
+
+ open LCI.AST;
+%}
+
+%token <int> CSTINT
+%token <string> CSTATOM
+%token <bool> CSTBOOL
+
+%token FALSE NOT TRUE
+%token OR AND
+%token LPAR RPAR 
+%token EOF
+             
+%left OR AND            
+
+%nonassoc NOT           
+
+%start Main
+%type <AST.prop> Main Prop
+
+%%
+
+Main:
+    Prop EOF                            { $1 }
+;
+
+Prop:
+    Const                               { $1                   }    
+  | Prop OR  Prop                       { Disj("or",  $1, $3)  }
+  | Prop AND Prop                       { Conj("and", $1, $3)  }
+;
+
+Const:
+  CSTATOM                               { Atom($1)             }
+   
+

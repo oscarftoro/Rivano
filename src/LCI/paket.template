@@ -1,0 +1,25 @@
+type project
+title
+    LCI
+owners
+    oscarftoro
+authors 
+    oscarftoro
+projectUrl
+    oscarftoro/oscarftoro/LCI
+iconUrl
+    lci/oscarftoro/LCI/master/docs/files/img/logo.png
+licenseUrl
+    oscarftoro/oscarftoro/LCI/blob/master/LICENSE.txt
+requireLicenseAcceptance
+    false
+copyright
+    Copyright 2015
+tags
+    logic dsl
+summary
+    a dsl to express First Order Logic expressions
+description
+    a tiny dsl
+
+

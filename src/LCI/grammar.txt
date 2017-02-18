@@ -1,0 +1,15 @@
+﻿
+
+program ::=
+  prop
+
+prop := 
+   not prop
+   ( prop )
+   prop op prop
+
+
+const ::=
+  CSTATOM
+  CSTINT
+  CSTBOOL

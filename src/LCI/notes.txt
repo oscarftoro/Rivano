@@ -1,0 +1,2 @@
+﻿fsharpi -r lib/FsLexYacc.Runtime.dll src/LCI/FOL.fs src/LCI/FolPar.fs src/LCI/FolPar.fs
+
