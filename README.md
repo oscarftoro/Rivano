@@ -6,9 +6,10 @@ the book "Lógica elemental".
 
 ## Disclosure
 
-The project is using Fake for building, and it has been tested only in real an operating system,
+The project is using [Fake](http://fsharp.github.io/FAKE/) for building, and it has been tested 
+only in a (real operating system)[http://ubuntustudio.org/],
 consequently, there are no guarantees that the project runs on Windows. I am using mono and
-monodevelop
+monodevelop.
 
 ## Compile
 to build the parser run on the console...
