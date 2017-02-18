@@ -11,17 +11,17 @@ consequently, there is no guarantees that the project runs on Windows. I am usin
 monodevelop
 
 ## Compile
-to build the parser run on the console
+to build the parser run on the console...
 
-´´bash
+```bash
 build parser
-´´
+```
 
 the lexer can be built typing:
 
-´´bash
+```bash
 build lexer
-´´
+```
 
 
 
