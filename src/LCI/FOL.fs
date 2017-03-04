@@ -45,15 +45,23 @@ let neg(b: bool) : bool = not b
   ///  - `e` - expresion
   ///  - `env` - environment or context
 
+module Interpreter
+
 let rec eval (e: Expr) (env: value env) : int =
   match e with
   | CInt    i    -> i
   | CBool   b    -> if b then 1 else 0
+  | Dyadic(op, e1, e2) -> 
+      let i1 = eval e1 env
+      let i2 = eval e2 env
+      match op with
+      | "&" -> if i1 = 1 then i2 else 0 
+      | "|" -> if i1 = 1 then 1 else i2 
+
   | Atom _       -> 0
   | CString _    -> 0
   | Neg  p       -> if p then 0 else 1
-  | Conj (p1,p2) -> if p1 then (eval (CBool p2) env) else 0
-  | Disj (p1,p2) -> if p1 then 0 else (eval(CBool p2) env)
+
 
 
 
