@@ -1,11 +1,11 @@
-# 1 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 1 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
  
  (* File Fun/Funlex.fsl 
     Lexer for a tiny First Order Logic language  
     osto@itu.dk * 2017-06-02
   *)
 
-module FunLex
+module FolLex
 
 open Microsoft.FSharp.Text.Lexing
 open FolPar;
@@ -29,7 +29,7 @@ let keyword s =
     | "false" -> CSTBOOL false
     | _       -> CSTATOM s
 
-# 32 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 32 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
 let trans : uint16[] array = 
     [| 
     (* State 0 *)
@@ -100,105 +100,105 @@ and SkipComment  (lexbuf : Microsoft.FSharp.Text.Lexing.LexBuffer<_>) = _fslex_S
 and _fslex_Token  _fslex_state lexbuf =
   match _fslex_tables.Interpret(_fslex_state,lexbuf) with
   | 0 -> ( 
-# 33 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 33 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      Token lexbuf 
-# 105 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 105 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 1 -> ( 
-# 34 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 34 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      lexbuf.EndPos <- lexbuf.EndPos.NextLine; Token lexbuf 
-# 110 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 110 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 2 -> ( 
-# 35 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 35 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      CSTINT (System.Int32.Parse (lexemeAsString lexbuf)) 
-# 115 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 115 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 3 -> ( 
-# 37 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 37 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      keyword (lexemeAsString lexbuf) 
-# 120 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 120 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 4 -> ( 
-# 38 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 38 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      commentStart := lexbuf.StartPos;
                                      commentDepth := 1; 
                                      SkipComment lexbuf; Token lexbuf 
-# 127 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 127 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 5 -> ( 
-# 41 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 41 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      AND 
-# 132 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 132 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 6 -> ( 
-# 42 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 42 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      AND 
-# 137 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 137 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 7 -> ( 
-# 43 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 43 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      OR  
-# 142 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 142 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 8 -> ( 
-# 44 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 44 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      OR  
-# 147 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 147 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 9 -> ( 
-# 45 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 45 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      NOT 
-# 152 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 152 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 10 -> ( 
-# 46 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 46 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      LPAR 
-# 157 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 157 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 11 -> ( 
-# 47 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 47 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      RPAR 
-# 162 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 162 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 12 -> ( 
-# 48 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 48 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      EOF 
-# 167 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 167 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 13 -> ( 
-# 49 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 49 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      failwith "Lexer error: illegal symbol" 
-# 172 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 172 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | _ -> failwith "Token"
 (* Rule SkipComment *)
 and _fslex_SkipComment  _fslex_state lexbuf =
   match _fslex_tables.Interpret(_fslex_state,lexbuf) with
   | 0 -> ( 
-# 52 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 52 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      commentDepth := !commentDepth - 1;  
                                      if !commentDepth = 0 then ()
                                      else SkipComment lexbuf 
                                    
-# 184 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 184 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 1 -> ( 
-# 56 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 56 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      commentDepth := !commentDepth + 1; 
                                      SkipComment lexbuf 
-# 190 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 190 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 2 -> ( 
-# 58 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 58 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      failwith "Lexer error: unterminated comment" 
-# 195 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 195 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | 3 -> ( 
-# 59 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fsl"
+# 59 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
                                      SkipComment lexbuf 
-# 200 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 200 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
           )
   | _ -> failwith "SkipComment"
 
-# 3000000 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolLex.fs"
+# 3000000 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"

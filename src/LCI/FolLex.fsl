@@ -4,7 +4,7 @@
     osto@itu.dk * 2017-06-02
   *)
 
-module FunLex
+module FolLex
 
 open Microsoft.FSharp.Text.Lexing
 open FolPar;

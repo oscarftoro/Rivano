@@ -2,16 +2,16 @@
 #nowarn "64";; // turn off warnings that type variables used in production annotations are instantiated to concrete type
 open Microsoft.FSharp.Text.Lexing
 open Microsoft.FSharp.Text.Parsing.ParseHelpers
-# 1 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fsy"
+# 1 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
 
  (* File Fun/FunPar.fsy 
     Parser for a small First Order Logic Language;
     osto@itu.dk * 2016-02-06
   *)
 
- open LCI.AST;
+ open Fol;
 
-# 14 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fs"
+# 14 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
 // This type is the type of tokens accepted by the parser
 type token = 
   | EOF
@@ -44,7 +44,8 @@ type tokenId =
 type nonTerminalId = 
     | NONTERM__startMain
     | NONTERM_Main
-    | NONTERM_Prop
+    | NONTERM_Expr
+    | NONTERM_AtExpr
     | NONTERM_Const
 
 // This function maps tokens to integer indexes
@@ -85,10 +86,14 @@ let prodIdxToNonTerminal (prodIdx:int) =
   match prodIdx with
     | 0 -> NONTERM__startMain 
     | 1 -> NONTERM_Main 
-    | 2 -> NONTERM_Prop 
-    | 3 -> NONTERM_Prop 
-    | 4 -> NONTERM_Prop 
-    | 5 -> NONTERM_Const 
+    | 2 -> NONTERM_Expr 
+    | 3 -> NONTERM_Expr 
+    | 4 -> NONTERM_Expr 
+    | 5 -> NONTERM_AtExpr 
+    | 6 -> NONTERM_AtExpr 
+    | 7 -> NONTERM_Const 
+    | 8 -> NONTERM_Const 
+    | 9 -> NONTERM_Const 
     | _ -> failwith "prodIdxToNonTerminal: bad production index"
 
 let _fsyacc_endOfInputTag = 13 
@@ -123,85 +128,129 @@ let _fsyacc_dataOfToken (t:token) =
   | CSTBOOL _fsyacc_x -> Microsoft.FSharp.Core.Operators.box _fsyacc_x 
   | CSTATOM _fsyacc_x -> Microsoft.FSharp.Core.Operators.box _fsyacc_x 
   | CSTINT _fsyacc_x -> Microsoft.FSharp.Core.Operators.box _fsyacc_x 
-let _fsyacc_gotos = [| 0us; 65535us; 1us; 65535us; 0us; 1us; 3us; 65535us; 0us; 2us; 7us; 5us; 8us; 6us; 3us; 65535us; 0us; 4us; 7us; 4us; 8us; 4us; |]
-let _fsyacc_sparseGotoTableRowOffsets = [|0us; 1us; 3us; 7us; |]
-let _fsyacc_stateToProdIdxsTableElements = [| 1us; 0us; 1us; 0us; 3us; 1us; 3us; 4us; 1us; 1us; 1us; 2us; 3us; 3us; 3us; 4us; 3us; 3us; 4us; 4us; 1us; 3us; 1us; 4us; 1us; 5us; |]
-let _fsyacc_stateToProdIdxsTableRowOffsets = [|0us; 2us; 4us; 8us; 10us; 12us; 16us; 20us; 22us; 24us; |]
-let _fsyacc_action_rows = 10
-let _fsyacc_actionTableElements = [|1us; 32768us; 9us; 9us; 0us; 49152us; 3us; 32768us; 0us; 3us; 3us; 7us; 4us; 8us; 0us; 16385us; 0us; 16386us; 0us; 16387us; 0us; 16388us; 1us; 32768us; 9us; 9us; 1us; 32768us; 9us; 9us; 0us; 16389us; |]
-let _fsyacc_actionTableRowOffsets = [|0us; 2us; 3us; 7us; 8us; 9us; 10us; 11us; 13us; 15us; |]
-let _fsyacc_reductionSymbolCounts = [|1us; 2us; 1us; 3us; 3us; 1us; |]
-let _fsyacc_productionToNonTerminalTable = [|0us; 1us; 2us; 2us; 2us; 3us; |]
-let _fsyacc_immediateActions = [|65535us; 49152us; 65535us; 16385us; 16386us; 65535us; 65535us; 65535us; 65535us; 16389us; |]
+let _fsyacc_gotos = [| 0us; 65535us; 1us; 65535us; 0us; 1us; 4us; 65535us; 0us; 2us; 8us; 5us; 9us; 6us; 11us; 7us; 4us; 65535us; 0us; 4us; 8us; 4us; 9us; 4us; 11us; 4us; 4us; 65535us; 0us; 10us; 8us; 10us; 9us; 10us; 11us; 10us; |]
+let _fsyacc_sparseGotoTableRowOffsets = [|0us; 1us; 3us; 8us; 13us; |]
+let _fsyacc_stateToProdIdxsTableElements = [| 1us; 0us; 1us; 0us; 3us; 1us; 3us; 4us; 1us; 1us; 1us; 2us; 3us; 3us; 3us; 4us; 3us; 3us; 4us; 4us; 3us; 3us; 4us; 6us; 1us; 3us; 1us; 4us; 1us; 5us; 1us; 6us; 1us; 6us; 1us; 7us; 1us; 8us; 1us; 9us; |]
+let _fsyacc_stateToProdIdxsTableRowOffsets = [|0us; 2us; 4us; 8us; 10us; 12us; 16us; 20us; 24us; 26us; 28us; 30us; 32us; 34us; 36us; 38us; |]
+let _fsyacc_action_rows = 16
+let _fsyacc_actionTableElements = [|4us; 32768us; 1us; 11us; 8us; 15us; 9us; 13us; 10us; 14us; 0us; 49152us; 3us; 32768us; 0us; 3us; 3us; 8us; 4us; 9us; 0us; 16385us; 0us; 16386us; 0us; 16387us; 0us; 16388us; 3us; 32768us; 2us; 12us; 3us; 8us; 4us; 9us; 4us; 32768us; 1us; 11us; 8us; 15us; 9us; 13us; 10us; 14us; 4us; 32768us; 1us; 11us; 8us; 15us; 9us; 13us; 10us; 14us; 0us; 16389us; 4us; 32768us; 1us; 11us; 8us; 15us; 9us; 13us; 10us; 14us; 0us; 16390us; 0us; 16391us; 0us; 16392us; 0us; 16393us; |]
+let _fsyacc_actionTableRowOffsets = [|0us; 5us; 6us; 10us; 11us; 12us; 13us; 14us; 18us; 23us; 28us; 29us; 34us; 35us; 36us; 37us; |]
+let _fsyacc_reductionSymbolCounts = [|1us; 2us; 1us; 3us; 3us; 1us; 3us; 1us; 1us; 1us; |]
+let _fsyacc_productionToNonTerminalTable = [|0us; 1us; 2us; 2us; 2us; 3us; 3us; 4us; 4us; 4us; |]
+let _fsyacc_immediateActions = [|65535us; 49152us; 65535us; 16385us; 16386us; 65535us; 65535us; 65535us; 65535us; 65535us; 16389us; 65535us; 16390us; 16391us; 16392us; 16393us; |]
 let _fsyacc_reductions ()  =    [| 
-# 137 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fs"
+# 142 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
-            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : AST.prop)) in
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : Fol.Expr)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
                       raise (Microsoft.FSharp.Text.Parsing.Accept(Microsoft.FSharp.Core.Operators.box _1))
                    )
                  : '_startMain));
-# 146 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fs"
+# 151 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
-            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : AST.prop)) in
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 29 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fsy"
-                                                               _1 
+# 28 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                                                               _1                   
                    )
-# 29 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fsy"
-                 : AST.prop));
-# 157 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fs"
+# 28 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                 : Fol.Expr));
+# 162 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'AtExpr)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 32 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                                                              _1                    
+                   )
+# 32 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                 : 'Expr));
+# 173 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
+            let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 33 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                                                               Dyadic("|",_1, _3)   
+                   )
+# 33 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                 : 'Expr));
+# 185 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
+            let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 34 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                                                               Dyadic("&",_1, _3)   
+                   )
+# 34 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                 : 'Expr));
+# 197 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'Const)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 33 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fsy"
-                                                               _1                   
+# 38 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                                                              _1                    
                    )
-# 33 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fsy"
-                 : AST.prop));
-# 168 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fs"
+# 38 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                 : 'AtExpr));
+# 208 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
-            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : AST.prop)) in
-            let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : AST.prop)) in
+            let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 34 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fsy"
-                                                               Disj("or",  _1, _3)  
+# 39 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                                                              _2                    
                    )
-# 34 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fsy"
-                 : AST.prop));
-# 180 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fs"
-        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
-            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : AST.prop)) in
-            let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : AST.prop)) in
-            Microsoft.FSharp.Core.Operators.box
-                (
-                   (
-# 35 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fsy"
-                                                               Conj("and", _1, _3)  
-                   )
-# 35 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fsy"
-                 : AST.prop));
-# 192 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fs"
+# 39 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                 : 'AtExpr));
+# 219 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 39 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fsy"
+# 42 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                                                                Atom(_1)             
                    )
-# 39 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fsy"
+# 42 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                 : 'Const));
+# 230 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : int)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 43 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                                                               CInt(_1)             
+                   )
+# 43 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                 : 'Const));
+# 241 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : bool)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 44 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                                                               CBool(_1)            
+                   )
+# 44 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                  : 'Const));
 |]
-# 204 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/ProjectScaffold/src/LCI/FolPar.fs"
+# 253 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
 let tables () : Microsoft.FSharp.Text.Parsing.Tables<_> = 
   { reductions= _fsyacc_reductions ();
     endOfInputTag = _fsyacc_endOfInputTag;
@@ -223,5 +272,5 @@ let tables () : Microsoft.FSharp.Text.Parsing.Tables<_> =
     numTerminals = 14;
     productionToNonTerminalTable = _fsyacc_productionToNonTerminalTable  }
 let engine lexer lexbuf startState = (tables ()).Interpret(lexer, lexbuf, startState)
-let Main lexer lexbuf : AST.prop =
+let Main lexer lexbuf : Fol.Expr =
     Microsoft.FSharp.Core.Operators.unbox ((tables ()).Interpret(lexer, lexbuf, 0))

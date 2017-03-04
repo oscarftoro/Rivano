@@ -3,6 +3,8 @@ source https://nuget.org/api/v2
 nuget FSharp.Core redirects: force
 nuget FsLexYacc 7.0.5
 nuget FsLexYacc.Runtime 7.0.5
+nuget System.IO
+nuget System.Runtime
 
 group Build
   source https://nuget.org/api/v2

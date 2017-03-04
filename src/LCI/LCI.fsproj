@@ -69,6 +69,9 @@
     <None Include="FolPar.fsy" />
     <None Include="grammar.txt" />
     <None Include="notes.txt" />
+    <Compile Include="Parse.fs" />
+    <Compile Include="FolLex.fs" />
+    <Compile Include="FolPar.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -81,8 +84,14 @@
     <Reference Include="fsyacc">
       <HintPath>..\..\packages\FsLexYacc\build\fsyacc.exe</HintPath>
     </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>..\..\packages\System.Runtime\lib\net462\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO">
+      <HintPath>..\..\packages\System.IO\lib\net462\System.IO.dll</HintPath>
+    </Reference>
     <Reference Include="FsLexYacc.Runtime">
-      <HintPath>..\..\packages\FsLexYacc.Runtime\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid10+MonoTouch10\FsLexYacc.Runtime.dll</HintPath>
+      <HintPath>..\..\lib\FsLexYacc.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Choose>

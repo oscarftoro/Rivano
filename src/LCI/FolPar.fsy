@@ -4,9 +4,8 @@
     osto@itu.dk * 2016-02-06
   *)
 
- open LCI.AST;
+ open Fol;
 %}
-
 %token <int> CSTINT
 %token <string> CSTATOM
 %token <bool> CSTBOOL
@@ -21,21 +20,29 @@
 %nonassoc NOT           
 
 %start Main
-%type <AST.prop> Main Prop
+%type <Fol.Expr> Main 
 
 %%
 
 Main:
-    Prop EOF                            { $1 }
+  Expr EOF                              { $1                   }
 ;
 
-Prop:
-    Const                               { $1                   }    
-  | Prop OR  Prop                       { Disj("or",  $1, $3)  }
-  | Prop AND Prop                       { Conj("and", $1, $3)  }
+Expr:
+  AtExpr                                {$1                    }   
+  | Expr OR  Expr                       { Dyadic("|",$1, $3)   }
+  | Expr AND Expr                       { Dyadic("&",$1, $3)   }
 ;
+
+AtExpr:
+  Const                                 {$1                    } 
+  |LPAR Expr RPAR                       {$2                    }
 
 Const:
   CSTATOM                               { Atom($1)             }
+  | CSTINT                              { CInt($1)             }
+  | CSTBOOL                             { CBool($1)            }
+;
    
+
 

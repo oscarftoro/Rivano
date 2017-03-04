@@ -1,2 +1,7 @@
 ﻿fsharpi -r lib/FsLexYacc.Runtime.dll src/LCI/FOL.fs src/LCI/FolPar.fs src/LCI/FolPar.fs
 
+fsharpi -r ~/Apps/FsLexYacc/bin/FsLexYacc.Runtime.dll FOL.fs FolPar.fs FolLex.fs Parse.fs
+
+or
+
+fsharpi -r  ../../packages/FsLexYacc.Runtime/lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid10+MonoTouch10/FsLexYacc.Runtime.dll -r ../../packages/System.Runtime/lib/net462/System.Runtime.dll -r ../../packages/System.IO/lib/net462/System.IO.dll FOL.fs FolPar.fs FolLex.fs Parse.fs 

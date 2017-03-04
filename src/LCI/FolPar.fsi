@@ -28,7 +28,8 @@ type tokenId =
 type nonTerminalId = 
     | NONTERM__startMain
     | NONTERM_Main
-    | NONTERM_Prop
+    | NONTERM_Expr
+    | NONTERM_AtExpr
     | NONTERM_Const
 /// This function maps tokens to integer indexes
 val tagOfToken: token -> int
@@ -41,4 +42,4 @@ val prodIdxToNonTerminal: int -> nonTerminalId
 
 /// This function gets the name of a token as a string
 val token_to_string: token -> string
-val Main : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (AST.prop) 
+val Main : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (Fol.Expr) 
