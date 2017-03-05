@@ -20,8 +20,6 @@ type Expr =
           | Dyadic  of string * Expr * Expr
           | Monadic of string * Expr
 
-
-
 (*environment, knowledge base or context *)
 type 't env = (string * 't) list
 (* value types of the environment*)
@@ -33,7 +31,7 @@ type value =
 
 let rec lookup env x = 
   match env with
-  | [] -> failwith (x + "not found")
+  | [] -> failwith (x + "variable not found in the environment")
   | (y,v)::t -> if x=y then v else lookup t x;;
 
   /// Evaluator of logical expressions

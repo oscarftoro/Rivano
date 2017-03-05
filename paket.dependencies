@@ -1,5 +1,6 @@
 source https://nuget.org/api/v2
 
+nuget FsCheck
 nuget FSharp.Core redirects: force
 nuget FsLexYacc 7.0.5
 nuget FsLexYacc.Runtime 7.0.5
