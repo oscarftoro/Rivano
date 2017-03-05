@@ -32,6 +32,7 @@ Expr:
   AtExpr                                {$1                    }   
   | Expr OR  Expr                       { Dyadic("|",$1, $3)   }
   | Expr AND Expr                       { Dyadic("&",$1, $3)   }
+  | NOT Expr                            { Monadic("~",$2)      }
 ;
 
 AtExpr:

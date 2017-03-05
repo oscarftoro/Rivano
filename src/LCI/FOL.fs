@@ -18,9 +18,8 @@ type Expr =
           | CString of string
           | Atom    of string
           | Dyadic  of string * Expr * Expr
-          | Neg     of bool
-          | Conj    of bool * bool
-          | Disj    of bool * bool
+          | Monadic of string * Expr
+
 
 
 (*environment, knowledge base or context *)
@@ -37,15 +36,11 @@ let rec lookup env x =
   | [] -> failwith (x + "not found")
   | (y,v)::t -> if x=y then v else lookup t x;;
 
-let neg(b: bool) : bool = not b
-
+  /// Evaluator of logical expressions
   /// Returns integers
-  ///
   /// ## Parameters
   ///  - `e` - expresion
   ///  - `env` - environment or context
-
-module Interpreter
 
 let rec eval (e: Expr) (env: value env) : int =
   match e with
@@ -57,10 +52,10 @@ let rec eval (e: Expr) (env: value env) : int =
       match op with
       | "&" -> if i1 = 1 then i2 else 0 
       | "|" -> if i1 = 1 then 1 else i2 
-
-  | Atom _       -> 0
-  | CString _    -> 0
-  | Neg  p       -> if p then 0 else 1
+  | Atom _       -> 0 (* not implemented *)
+  | CString _    -> 0 (* not sure if necessary *)
+  | Monadic (_,e)       -> (*negation operator*)    
+     if (eval e env = 1) then 0 else 1
 
 
 
