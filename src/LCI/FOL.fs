@@ -60,6 +60,8 @@ let getDyadic (v1 : value) (v2: value) (op: string): value =
     bool2Boolean (getBool v2 || getBool v2) 
   | "+" ->
      int2Int (getInt v1 + getInt v2)
+  | "-" ->
+     int2Int (getInt v1 - getInt v2)   
   | _   -> failwithf ("Binary operator not supported for boolean expressions")
   
   

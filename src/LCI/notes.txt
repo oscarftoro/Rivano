@@ -8,4 +8,6 @@ fsharpi -r  ../../packages/FsLexYacc.Runtime/lib/portable-net45+netcore45+wpa81+
 
 
 
-fromString("let x = atom \"hola\" in x end");;
+> fromString("let x = atom \"hola\" in x end");;
+> open Parse;;
+> fromString ("5-2");;

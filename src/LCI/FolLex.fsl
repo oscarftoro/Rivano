@@ -45,7 +45,7 @@ let cEscape s =
   | "\\f"  -> '\012'
   | "\\r"  -> '\r'
   | _      -> failwith "Lexer error: impossible escape"
-  
+
 }
 
 
@@ -58,17 +58,19 @@ rule Token = parse
   | "(*"            { commentStart := lexbuf.StartPos;
                       commentDepth := 1; 
                       SkipComment lexbuf; Token lexbuf }
-  | "&&"            { AND  }
-  | "∧"             { AND  }
-  | "||"            { OR   }
-  | "∨"             { OR   }
-  | "="             { EQ   }
-  | '+'             { PLUS }
-  | "¬"             { NOT  }
-  | '('             { LPAR }
-  | ')'             { RPAR }
+  | "&&"            { AND   }
+  | "∧"             { AND   }
+  | "||"            { OR    }
+  | "∨"             { OR    }
+  | "¬"             { NOT   }
+  | "="             { EQ    }
+  | '+'             { PLUS  }
+  | '-'             { MINUS }
+
+  | '('             { LPAR  }
+  | ')'             { RPAR  }
   | '"'             { CSTATOM (String [] lexbuf) }
-  | eof             { EOF  }
+  | eof             { EOF   }
   | _               { failwith "Lexer error: illegal symbol, yo" }
 
 and SkipComment = parse

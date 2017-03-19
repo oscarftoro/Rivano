@@ -9,6 +9,7 @@ type token =
   | EQ
   | ATOM
   | PLUS
+  | MINUS
   | LET
   | IN
   | END
@@ -30,6 +31,7 @@ type tokenId =
     | TOKEN_EQ
     | TOKEN_ATOM
     | TOKEN_PLUS
+    | TOKEN_MINUS
     | TOKEN_LET
     | TOKEN_IN
     | TOKEN_END
