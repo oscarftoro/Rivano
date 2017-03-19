@@ -4,6 +4,7 @@ type token =
   | LPAR
   | RPAR
   | QUOT
+  | IMPL
   | OR
   | AND
   | EQ
@@ -27,6 +28,7 @@ type tokenId =
     | TOKEN_LPAR
     | TOKEN_RPAR
     | TOKEN_QUOT
+    | TOKEN_IMPL
     | TOKEN_OR
     | TOKEN_AND
     | TOKEN_EQ

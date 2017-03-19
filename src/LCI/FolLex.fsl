@@ -22,16 +22,17 @@ let commentDepth = ref 0;  (* Current comment nesting *)
 
 let keyword s =
     match s with
-    | "let"   -> LET
-    | "in"    -> IN
-    | "atom"  -> ATOM
-    | "end"   -> END
-    | "not"   -> NOT
-    | "and"   -> AND
-    | "or"    -> OR
-    | "true"  -> CSTBOOL true
-    | "false" -> CSTBOOL false
-    | _       -> NAME s
+    | "let"     -> LET
+    | "in"      -> IN
+    | "atom"    -> ATOM
+    | "end"     -> END
+    | "not"     -> NOT
+    | "and"     -> AND
+    | "implies" -> IMPL
+    | "or"      -> OR
+    | "true"    -> CSTBOOL true
+    | "false"   -> CSTBOOL false
+    | _         -> NAME s
 
 let cEscape s =
   match s with 
@@ -62,6 +63,8 @@ rule Token = parse
   | "∧"             { AND   }
   | "||"            { OR    }
   | "∨"             { OR    }
+  | "=>"            { IMPL  }
+  | "→"             { IMPL  }
   | "¬"             { NOT   }
   | "="             { EQ    }
   | '+'             { PLUS  }

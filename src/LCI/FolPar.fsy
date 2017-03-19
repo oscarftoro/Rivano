@@ -13,7 +13,7 @@
 
 %token LET IN END FALSE NOT TRUE VAL
 %token OR AND EQ ATOM PLUS MINUS MUL
-%token LPAR RPAR QUOT
+%token LPAR RPAR QUOT IMPL
 %token EOF
              
 %left OR AND 
@@ -41,6 +41,8 @@ Expr:
     { Dyadic("∧", $1, $3)  }
   | NOT Expr                            
     { Monadic("¬", $2)     }
+  | Expr IMPL Expr
+    { Dyadic("→", $1, $3)   }  
   | Expr PLUS Expr 
     { Dyadic("+", $1, $3)  }  
   | Expr MINUS Expr 

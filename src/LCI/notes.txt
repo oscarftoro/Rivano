@@ -14,3 +14,36 @@ fsharpi -r  ../../packages/FsLexYacc.Runtime/lib/portable-net45+netcore45+wpa81+
 > let x = fromString("let y = 8 in y - 3 end");;  
 > open LCI.Fol;;
 > eval(x) [];;
+
+implies
+
+> open Parse;;
+> open LCI.Fol;;
+> fromString("true or false");;
+val it : expr = Dyadic ("∨",CBool true,CBool false)
+> let ff = fromString("true or false");;
+
+val ff : expr = Dyadic ("∨",CBool true,CBool false)
+
+> eval ff [];;
+val it : value = Boolean 1
+> let ff = fromString("true implies false");;
+
+val ff : expr = Dyadic ("→",CBool true,CBool false)
+
+> eval ff [];;                               
+val it : value = Boolean 0
+> let ff = fromString("true => false");;     
+
+val ff : expr = Dyadic ("→",CBool true,CBool false)
+
+> eval ff [];;                               
+val it : value = Boolean 0
+> 
+
+> fromString("let x = atom \"poet\" in x or  atom \"rich\" end");;
+val it : expr = Let ("x",Atom "poet",Dyadic ("∨",Var "x",Atom "rich"))
+> fromString("let x = atom \"musician\" in x implies  atom \"rich\" end");;
+val it : expr = Let ("x",Atom "musician",Dyadic ("→",Var "x",Atom "rich"))
+
+

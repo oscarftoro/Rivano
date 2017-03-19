@@ -55,10 +55,12 @@ let int2Int (i:int) :value = Int i
 
 let getDyadic (v1 : value) (v2: value) (op: string): value =
   match op with
-  | "&" ->
+  | "∧" ->
     bool2Boolean (getBool v1 && getBool v2)
-  | "|" -> 
-    bool2Boolean (getBool v2 || getBool v2) 
+  | "∨" -> 
+    bool2Boolean (getBool v1 || getBool v2) 
+  | "→" ->
+    bool2Boolean (not (getBool v1) || getBool v2)  
   | "+" ->
     int2Int (getInt v1 + getInt v2)
   | "-" ->
@@ -76,7 +78,7 @@ let getDyadic (v1 : value) (v2: value) (op: string): value =
 let rec eval (e: expr) (env: value env) : value =
   match e with
   | CInt    i    -> Int i
-  | CBool   b    -> if b then Int 1 else Int 0
+  | CBool   b    -> if b then Boolean 1 else Boolean 0
   | Var     x    ->
       match lookup x env with
       | Int i     -> Int i
@@ -89,8 +91,9 @@ let rec eval (e: expr) (env: value env) : value =
     let (b1, b2) = (eval e1 env,eval e2 env)
     getDyadic b1 b2 op 
   | Atom _        -> Int 0 (* not implemented *)
-  | Monadic (_,e) ->   (*negation operator*)    
+  | Monadic ("¬",e) ->   (*negation operator*)    
     if (eval e env = Boolean 1) then Boolean 0 else Boolean 1
+  |  _ -> failwith "Monadic operator no recognised, yo"
 
 
 
