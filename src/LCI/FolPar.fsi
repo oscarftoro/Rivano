@@ -10,6 +10,7 @@ type token =
   | ATOM
   | PLUS
   | MINUS
+  | MUL
   | LET
   | IN
   | END
@@ -32,6 +33,7 @@ type tokenId =
     | TOKEN_ATOM
     | TOKEN_PLUS
     | TOKEN_MINUS
+    | TOKEN_MUL
     | TOKEN_LET
     | TOKEN_IN
     | TOKEN_END

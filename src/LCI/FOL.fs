@@ -51,6 +51,7 @@ let getInt (i: value) : int =
 let bool2Boolean (b:bool) : value =  if b then Boolean 1 else Boolean 0
 //int ->Int i converter
 let int2Int (i:int) :value = Int i
+  
 
 let getDyadic (v1 : value) (v2: value) (op: string): value =
   match op with
@@ -59,9 +60,11 @@ let getDyadic (v1 : value) (v2: value) (op: string): value =
   | "|" -> 
     bool2Boolean (getBool v2 || getBool v2) 
   | "+" ->
-     int2Int (getInt v1 + getInt v2)
+    int2Int (getInt v1 + getInt v2)
   | "-" ->
-     int2Int (getInt v1 - getInt v2)   
+    int2Int (getInt v1 - getInt v2)   
+  | "*" ->
+    int2Int (getInt v1 * getInt v2)
   | _   -> failwithf ("Binary operator not supported for boolean expressions")
   
   
@@ -87,7 +90,7 @@ let rec eval (e: expr) (env: value env) : value =
     getDyadic b1 b2 op 
   | Atom _        -> Int 0 (* not implemented *)
   | Monadic (_,e) ->   (*negation operator*)    
-                     if (eval e env = Boolean 1) then Boolean 0 else Boolean 1
+    if (eval e env = Boolean 1) then Boolean 0 else Boolean 1
 
 
 

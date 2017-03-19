@@ -11,3 +11,6 @@ fsharpi -r  ../../packages/FsLexYacc.Runtime/lib/portable-net45+netcore45+wpa81+
 > fromString("let x = atom \"hola\" in x end");;
 > open Parse;;
 > fromString ("5-2");;
+> let x = fromString("let y = 8 in y - 3 end");;  
+> open LCI.Fol;;
+> eval(x) [];;
