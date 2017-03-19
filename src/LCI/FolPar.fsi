@@ -3,9 +3,12 @@ type token =
   | EOF
   | LPAR
   | RPAR
+  | QUOT
   | OR
   | AND
   | EQ
+  | ATOM
+  | PLUS
   | LET
   | IN
   | END
@@ -21,9 +24,12 @@ type tokenId =
     | TOKEN_EOF
     | TOKEN_LPAR
     | TOKEN_RPAR
+    | TOKEN_QUOT
     | TOKEN_OR
     | TOKEN_AND
     | TOKEN_EQ
+    | TOKEN_ATOM
+    | TOKEN_PLUS
     | TOKEN_LET
     | TOKEN_IN
     | TOKEN_END

@@ -12,11 +12,12 @@
 %token <string> NAME
 
 %token LET IN END FALSE NOT TRUE VAL
-%token OR AND EQ
-%token LPAR RPAR 
+%token OR AND EQ ATOM PLUS
+%token LPAR RPAR QUOT
 %token EOF
              
 %left OR AND 
+%left PLUS
 %left EQ 
 
 %nonassoc NOT           
@@ -35,11 +36,13 @@ Expr:
   AtExpr                                
     { $1                   }
   | Expr OR  Expr                       
-    { Dyadic("∨",$1, $3)   }
+    { Dyadic("∨", $1, $3)  }
   | Expr AND Expr                       
-    { Dyadic("∧",$1, $3)   }
+    { Dyadic("∧", $1, $3)  }
   | NOT Expr                            
-    { Monadic("¬",$2)      }
+    { Monadic("¬", $2)     }
+  | Expr PLUS Expr 
+    { Dyadic("+", $1, $3)  }  
 ;
 
 AtExpr:
@@ -48,18 +51,18 @@ AtExpr:
   | NAME                                
     { Var $1               }
   | LET NAME EQ Expr IN Expr END        
-    { Let($2,$4,$6)        }
+    { Let($2, $4, $6)      }
   | LPAR Expr RPAR                      
     { $2                   }
 ;
 
 Const:
-  CSTATOM                               
-    { Atom($1)             }
+  ATOM CSTATOM                                 
+    { Atom($2)             }
   | CSTINT                              
     { CInt($1)             }
   | CSTBOOL                             
-    { CBool($1)            }
+    { CBool($1)            }  
 ;
    
 

@@ -17,9 +17,12 @@ type token =
   | EOF
   | LPAR
   | RPAR
+  | QUOT
   | OR
   | AND
   | EQ
+  | ATOM
+  | PLUS
   | LET
   | IN
   | END
@@ -36,9 +39,12 @@ type tokenId =
     | TOKEN_EOF
     | TOKEN_LPAR
     | TOKEN_RPAR
+    | TOKEN_QUOT
     | TOKEN_OR
     | TOKEN_AND
     | TOKEN_EQ
+    | TOKEN_ATOM
+    | TOKEN_PLUS
     | TOKEN_LET
     | TOKEN_IN
     | TOKEN_END
@@ -66,20 +72,23 @@ let tagOfToken (t:token) =
   | EOF  -> 0 
   | LPAR  -> 1 
   | RPAR  -> 2 
-  | OR  -> 3 
-  | AND  -> 4 
-  | EQ  -> 5 
-  | LET  -> 6 
-  | IN  -> 7 
-  | END  -> 8 
-  | FALSE  -> 9 
-  | NOT  -> 10 
-  | TRUE  -> 11 
-  | VAL  -> 12 
-  | NAME _ -> 13 
-  | CSTBOOL _ -> 14 
-  | CSTATOM _ -> 15 
-  | CSTINT _ -> 16 
+  | QUOT  -> 3 
+  | OR  -> 4 
+  | AND  -> 5 
+  | EQ  -> 6 
+  | ATOM  -> 7 
+  | PLUS  -> 8 
+  | LET  -> 9 
+  | IN  -> 10 
+  | END  -> 11 
+  | FALSE  -> 12 
+  | NOT  -> 13 
+  | TRUE  -> 14 
+  | VAL  -> 15 
+  | NAME _ -> 16 
+  | CSTBOOL _ -> 17 
+  | CSTATOM _ -> 18 
+  | CSTINT _ -> 19 
 
 // This function maps integer indexes to symbolic token ids
 let tokenTagToTokenId (tokenIdx:int) = 
@@ -87,22 +96,25 @@ let tokenTagToTokenId (tokenIdx:int) =
   | 0 -> TOKEN_EOF 
   | 1 -> TOKEN_LPAR 
   | 2 -> TOKEN_RPAR 
-  | 3 -> TOKEN_OR 
-  | 4 -> TOKEN_AND 
-  | 5 -> TOKEN_EQ 
-  | 6 -> TOKEN_LET 
-  | 7 -> TOKEN_IN 
-  | 8 -> TOKEN_END 
-  | 9 -> TOKEN_FALSE 
-  | 10 -> TOKEN_NOT 
-  | 11 -> TOKEN_TRUE 
-  | 12 -> TOKEN_VAL 
-  | 13 -> TOKEN_NAME 
-  | 14 -> TOKEN_CSTBOOL 
-  | 15 -> TOKEN_CSTATOM 
-  | 16 -> TOKEN_CSTINT 
-  | 19 -> TOKEN_end_of_input
-  | 17 -> TOKEN_error
+  | 3 -> TOKEN_QUOT 
+  | 4 -> TOKEN_OR 
+  | 5 -> TOKEN_AND 
+  | 6 -> TOKEN_EQ 
+  | 7 -> TOKEN_ATOM 
+  | 8 -> TOKEN_PLUS 
+  | 9 -> TOKEN_LET 
+  | 10 -> TOKEN_IN 
+  | 11 -> TOKEN_END 
+  | 12 -> TOKEN_FALSE 
+  | 13 -> TOKEN_NOT 
+  | 14 -> TOKEN_TRUE 
+  | 15 -> TOKEN_VAL 
+  | 16 -> TOKEN_NAME 
+  | 17 -> TOKEN_CSTBOOL 
+  | 18 -> TOKEN_CSTATOM 
+  | 19 -> TOKEN_CSTINT 
+  | 22 -> TOKEN_end_of_input
+  | 20 -> TOKEN_error
   | _ -> failwith "tokenTagToTokenId: bad token"
 
 /// This function maps production indexes returned in syntax errors to strings representing the non terminal that would be produced by that production
@@ -114,17 +126,18 @@ let prodIdxToNonTerminal (prodIdx:int) =
     | 3 -> NONTERM_Expr 
     | 4 -> NONTERM_Expr 
     | 5 -> NONTERM_Expr 
-    | 6 -> NONTERM_AtExpr 
+    | 6 -> NONTERM_Expr 
     | 7 -> NONTERM_AtExpr 
     | 8 -> NONTERM_AtExpr 
     | 9 -> NONTERM_AtExpr 
-    | 10 -> NONTERM_Const 
+    | 10 -> NONTERM_AtExpr 
     | 11 -> NONTERM_Const 
     | 12 -> NONTERM_Const 
+    | 13 -> NONTERM_Const 
     | _ -> failwith "prodIdxToNonTerminal: bad production index"
 
-let _fsyacc_endOfInputTag = 19 
-let _fsyacc_tagOfErrorTerminal = 17
+let _fsyacc_endOfInputTag = 22 
+let _fsyacc_tagOfErrorTerminal = 20
 
 // This function gets the name of a token as a string
 let token_to_string (t:token) = 
@@ -132,9 +145,12 @@ let token_to_string (t:token) =
   | EOF  -> "EOF" 
   | LPAR  -> "LPAR" 
   | RPAR  -> "RPAR" 
+  | QUOT  -> "QUOT" 
   | OR  -> "OR" 
   | AND  -> "AND" 
   | EQ  -> "EQ" 
+  | ATOM  -> "ATOM" 
+  | PLUS  -> "PLUS" 
   | LET  -> "LET" 
   | IN  -> "IN" 
   | END  -> "END" 
@@ -153,9 +169,12 @@ let _fsyacc_dataOfToken (t:token) =
   | EOF  -> (null : System.Object) 
   | LPAR  -> (null : System.Object) 
   | RPAR  -> (null : System.Object) 
+  | QUOT  -> (null : System.Object) 
   | OR  -> (null : System.Object) 
   | AND  -> (null : System.Object) 
   | EQ  -> (null : System.Object) 
+  | ATOM  -> (null : System.Object) 
+  | PLUS  -> (null : System.Object) 
   | LET  -> (null : System.Object) 
   | IN  -> (null : System.Object) 
   | END  -> (null : System.Object) 
@@ -167,18 +186,18 @@ let _fsyacc_dataOfToken (t:token) =
   | CSTBOOL _fsyacc_x -> Microsoft.FSharp.Core.Operators.box _fsyacc_x 
   | CSTATOM _fsyacc_x -> Microsoft.FSharp.Core.Operators.box _fsyacc_x 
   | CSTINT _fsyacc_x -> Microsoft.FSharp.Core.Operators.box _fsyacc_x 
-let _fsyacc_gotos = [| 0us; 65535us; 1us; 65535us; 0us; 1us; 7us; 65535us; 0us; 2us; 11us; 5us; 12us; 6us; 13us; 7us; 18us; 8us; 19us; 9us; 21us; 10us; 7us; 65535us; 0us; 4us; 11us; 4us; 12us; 4us; 13us; 4us; 18us; 4us; 19us; 4us; 21us; 4us; 7us; 65535us; 0us; 14us; 11us; 14us; 12us; 14us; 13us; 14us; 18us; 14us; 19us; 14us; 21us; 14us; |]
-let _fsyacc_sparseGotoTableRowOffsets = [|0us; 1us; 3us; 11us; 19us; |]
-let _fsyacc_stateToProdIdxsTableElements = [| 1us; 0us; 1us; 0us; 3us; 1us; 3us; 4us; 1us; 1us; 1us; 2us; 3us; 3us; 3us; 4us; 3us; 3us; 4us; 4us; 3us; 3us; 4us; 5us; 3us; 3us; 4us; 8us; 3us; 3us; 4us; 8us; 3us; 3us; 4us; 9us; 1us; 3us; 1us; 4us; 1us; 5us; 1us; 6us; 1us; 7us; 1us; 8us; 1us; 8us; 1us; 8us; 1us; 8us; 1us; 8us; 1us; 9us; 1us; 9us; 1us; 10us; 1us; 11us; 1us; 12us; |]
-let _fsyacc_stateToProdIdxsTableRowOffsets = [|0us; 2us; 4us; 8us; 10us; 12us; 16us; 20us; 24us; 28us; 32us; 36us; 38us; 40us; 42us; 44us; 46us; 48us; 50us; 52us; 54us; 56us; 58us; 60us; 62us; 64us; |]
-let _fsyacc_action_rows = 26
-let _fsyacc_actionTableElements = [|7us; 32768us; 1us; 21us; 6us; 16us; 10us; 13us; 13us; 15us; 14us; 25us; 15us; 23us; 16us; 24us; 0us; 49152us; 3us; 32768us; 0us; 3us; 3us; 11us; 4us; 12us; 0us; 16385us; 0us; 16386us; 0us; 16387us; 0us; 16388us; 0us; 16389us; 3us; 32768us; 3us; 11us; 4us; 12us; 7us; 19us; 3us; 32768us; 3us; 11us; 4us; 12us; 8us; 20us; 3us; 32768us; 2us; 22us; 3us; 11us; 4us; 12us; 7us; 32768us; 1us; 21us; 6us; 16us; 10us; 13us; 13us; 15us; 14us; 25us; 15us; 23us; 16us; 24us; 7us; 32768us; 1us; 21us; 6us; 16us; 10us; 13us; 13us; 15us; 14us; 25us; 15us; 23us; 16us; 24us; 7us; 32768us; 1us; 21us; 6us; 16us; 10us; 13us; 13us; 15us; 14us; 25us; 15us; 23us; 16us; 24us; 0us; 16390us; 0us; 16391us; 1us; 32768us; 13us; 17us; 1us; 32768us; 5us; 18us; 7us; 32768us; 1us; 21us; 6us; 16us; 10us; 13us; 13us; 15us; 14us; 25us; 15us; 23us; 16us; 24us; 7us; 32768us; 1us; 21us; 6us; 16us; 10us; 13us; 13us; 15us; 14us; 25us; 15us; 23us; 16us; 24us; 0us; 16392us; 7us; 32768us; 1us; 21us; 6us; 16us; 10us; 13us; 13us; 15us; 14us; 25us; 15us; 23us; 16us; 24us; 0us; 16393us; 0us; 16394us; 0us; 16395us; 0us; 16396us; |]
-let _fsyacc_actionTableRowOffsets = [|0us; 8us; 9us; 13us; 14us; 15us; 16us; 17us; 18us; 22us; 26us; 30us; 38us; 46us; 54us; 55us; 56us; 58us; 60us; 68us; 76us; 77us; 85us; 86us; 87us; 88us; |]
-let _fsyacc_reductionSymbolCounts = [|1us; 2us; 1us; 3us; 3us; 2us; 1us; 1us; 7us; 3us; 1us; 1us; 1us; |]
-let _fsyacc_productionToNonTerminalTable = [|0us; 1us; 2us; 2us; 2us; 2us; 3us; 3us; 3us; 3us; 4us; 4us; 4us; |]
-let _fsyacc_immediateActions = [|65535us; 49152us; 65535us; 16385us; 16386us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 16390us; 16391us; 65535us; 65535us; 65535us; 65535us; 16392us; 65535us; 16393us; 16394us; 16395us; 16396us; |]
+let _fsyacc_gotos = [| 0us; 65535us; 1us; 65535us; 0us; 1us; 8us; 65535us; 0us; 2us; 12us; 5us; 13us; 6us; 14us; 7us; 15us; 8us; 20us; 9us; 21us; 10us; 23us; 11us; 8us; 65535us; 0us; 4us; 12us; 4us; 13us; 4us; 14us; 4us; 15us; 4us; 20us; 4us; 21us; 4us; 23us; 4us; 8us; 65535us; 0us; 16us; 12us; 16us; 13us; 16us; 14us; 16us; 15us; 16us; 20us; 16us; 21us; 16us; 23us; 16us; |]
+let _fsyacc_sparseGotoTableRowOffsets = [|0us; 1us; 3us; 12us; 21us; |]
+let _fsyacc_stateToProdIdxsTableElements = [| 1us; 0us; 1us; 0us; 4us; 1us; 3us; 4us; 6us; 1us; 1us; 1us; 2us; 4us; 3us; 3us; 4us; 6us; 4us; 3us; 4us; 4us; 6us; 4us; 3us; 4us; 5us; 6us; 4us; 3us; 4us; 6us; 6us; 4us; 3us; 4us; 6us; 9us; 4us; 3us; 4us; 6us; 9us; 4us; 3us; 4us; 6us; 10us; 1us; 3us; 1us; 4us; 1us; 5us; 1us; 6us; 1us; 7us; 1us; 8us; 1us; 9us; 1us; 9us; 1us; 9us; 1us; 9us; 1us; 9us; 1us; 10us; 1us; 10us; 1us; 11us; 1us; 11us; 1us; 12us; 1us; 13us; |]
+let _fsyacc_stateToProdIdxsTableRowOffsets = [|0us; 2us; 4us; 9us; 11us; 13us; 18us; 23us; 28us; 33us; 38us; 43us; 48us; 50us; 52us; 54us; 56us; 58us; 60us; 62us; 64us; 66us; 68us; 70us; 72us; 74us; 76us; 78us; 80us; |]
+let _fsyacc_action_rows = 29
+let _fsyacc_actionTableElements = [|7us; 32768us; 1us; 23us; 7us; 25us; 9us; 18us; 13us; 14us; 16us; 17us; 17us; 28us; 19us; 27us; 0us; 49152us; 4us; 32768us; 0us; 3us; 4us; 12us; 5us; 13us; 8us; 15us; 0us; 16385us; 0us; 16386us; 1us; 16387us; 8us; 15us; 1us; 16388us; 8us; 15us; 0us; 16389us; 0us; 16390us; 4us; 32768us; 4us; 12us; 5us; 13us; 8us; 15us; 10us; 21us; 4us; 32768us; 4us; 12us; 5us; 13us; 8us; 15us; 11us; 22us; 4us; 32768us; 2us; 24us; 4us; 12us; 5us; 13us; 8us; 15us; 7us; 32768us; 1us; 23us; 7us; 25us; 9us; 18us; 13us; 14us; 16us; 17us; 17us; 28us; 19us; 27us; 7us; 32768us; 1us; 23us; 7us; 25us; 9us; 18us; 13us; 14us; 16us; 17us; 17us; 28us; 19us; 27us; 7us; 32768us; 1us; 23us; 7us; 25us; 9us; 18us; 13us; 14us; 16us; 17us; 17us; 28us; 19us; 27us; 7us; 32768us; 1us; 23us; 7us; 25us; 9us; 18us; 13us; 14us; 16us; 17us; 17us; 28us; 19us; 27us; 0us; 16391us; 0us; 16392us; 1us; 32768us; 16us; 19us; 1us; 32768us; 6us; 20us; 7us; 32768us; 1us; 23us; 7us; 25us; 9us; 18us; 13us; 14us; 16us; 17us; 17us; 28us; 19us; 27us; 7us; 32768us; 1us; 23us; 7us; 25us; 9us; 18us; 13us; 14us; 16us; 17us; 17us; 28us; 19us; 27us; 0us; 16393us; 7us; 32768us; 1us; 23us; 7us; 25us; 9us; 18us; 13us; 14us; 16us; 17us; 17us; 28us; 19us; 27us; 0us; 16394us; 1us; 32768us; 18us; 26us; 0us; 16395us; 0us; 16396us; 0us; 16397us; |]
+let _fsyacc_actionTableRowOffsets = [|0us; 8us; 9us; 14us; 15us; 16us; 18us; 20us; 21us; 22us; 27us; 32us; 37us; 45us; 53us; 61us; 69us; 70us; 71us; 73us; 75us; 83us; 91us; 92us; 100us; 101us; 103us; 104us; 105us; |]
+let _fsyacc_reductionSymbolCounts = [|1us; 2us; 1us; 3us; 3us; 2us; 3us; 1us; 1us; 7us; 3us; 2us; 1us; 1us; |]
+let _fsyacc_productionToNonTerminalTable = [|0us; 1us; 2us; 2us; 2us; 2us; 2us; 3us; 3us; 3us; 3us; 4us; 4us; 4us; |]
+let _fsyacc_immediateActions = [|65535us; 49152us; 65535us; 16385us; 16386us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 16391us; 16392us; 65535us; 65535us; 65535us; 65535us; 16393us; 65535us; 16394us; 65535us; 16395us; 16396us; 16397us; |]
 let _fsyacc_reductions ()  =    [| 
-# 181 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+# 200 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : LCI.Fol.expr)) in
             Microsoft.FSharp.Core.Operators.box
@@ -187,86 +206,98 @@ let _fsyacc_reductions ()  =    [|
                       raise (Microsoft.FSharp.Text.Parsing.Accept(Microsoft.FSharp.Core.Operators.box _1))
                    )
                  : '_startMain));
-# 190 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+# 209 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 31 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 32 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                            _1                   
                    )
-# 31 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 32 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                  : LCI.Fol.expr));
-# 201 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+# 220 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'AtExpr)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 36 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 37 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                            _1                   
                    )
-# 36 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 37 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                  : 'Expr));
-# 212 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+# 231 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 38 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
-                           Dyadic("∨",_1, _3)   
+# 39 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                           Dyadic("∨", _1, _3)  
                    )
-# 38 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 39 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                  : 'Expr));
-# 224 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+# 243 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 40 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
-                           Dyadic("∧",_1, _3)   
+# 41 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                           Dyadic("∧", _1, _3)  
                    )
-# 40 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 41 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                  : 'Expr));
-# 236 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+# 255 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 42 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
-                           Monadic("¬",_2)      
+# 43 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                           Monadic("¬", _2)     
                    )
-# 42 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 43 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                  : 'Expr));
-# 247 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+# 266 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
+            let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 45 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                           Dyadic("+", _1, _3)  
+                   )
+# 45 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                 : 'Expr));
+# 278 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'Const)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 47 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 50 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                            _1                   
                    )
-# 47 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 50 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                  : 'AtExpr));
-# 258 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+# 289 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 49 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 52 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                            Var _1               
                    )
-# 49 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 52 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                  : 'AtExpr));
-# 269 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+# 300 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             let _4 = (let data = parseState.GetInput(4) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
@@ -274,57 +305,57 @@ let _fsyacc_reductions ()  =    [|
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 51 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
-                           Let(_2,_4,_6)        
+# 54 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                           Let(_2, _4, _6)      
                    )
-# 51 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 54 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                  : 'AtExpr));
-# 282 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+# 313 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'Expr)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 53 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 56 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                            _2                   
                    )
-# 53 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 56 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                  : 'AtExpr));
-# 293 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+# 324 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
-            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
+            let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 58 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
-                           Atom(_1)             
+# 61 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+                           Atom(_2)             
                    )
-# 58 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 61 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                  : 'Const));
-# 304 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+# 335 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : int)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 60 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 63 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                            CInt(_1)             
                    )
-# 60 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 63 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                  : 'Const));
-# 315 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+# 346 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : bool)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 62 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 65 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                            CBool(_1)            
                    )
-# 62 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
+# 65 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fsy"
                  : 'Const));
 |]
-# 327 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
+# 358 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolPar.fs"
 let tables () : Microsoft.FSharp.Text.Parsing.Tables<_> = 
   { reductions= _fsyacc_reductions ();
     endOfInputTag = _fsyacc_endOfInputTag;
@@ -343,7 +374,7 @@ let tables () : Microsoft.FSharp.Text.Parsing.Tables<_> =
                               match parse_error_rich with 
                               | Some f -> f ctxt
                               | None -> parse_error ctxt.Message);
-    numTerminals = 20;
+    numTerminals = 23;
     productionToNonTerminalTable = _fsyacc_productionToNonTerminalTable  }
 let engine lexer lexbuf startState = (tables ()).Interpret(lexer, lexbuf, startState)
 let Main lexer lexbuf : LCI.Fol.expr =

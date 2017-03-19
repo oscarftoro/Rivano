@@ -19,10 +19,12 @@ let commentDepth = ref 0;  (* Current comment nesting *)
 
 (* Distinguish keywords from identifiers: *)
 
+
 let keyword s =
     match s with
     | "let"   -> LET
     | "in"    -> IN
+    | "atom"  -> ATOM
     | "end"   -> END
     | "not"   -> NOT
     | "and"   -> AND
@@ -30,7 +32,22 @@ let keyword s =
     | "true"  -> CSTBOOL true
     | "false" -> CSTBOOL false
     | _       -> NAME s
+
+let cEscape s =
+  match s with 
+  | "\\\\" -> '\\'
+  | "\\\"" -> '\"'
+  | "\\a"  -> '\007'
+  | "\\b"  -> '\008'
+  | "\\t"  -> '\t'
+  | "\\n"  -> '\n'
+  | "\\v"  -> '\011'
+  | "\\f"  -> '\012'
+  | "\\r"  -> '\r'
+  | _      -> failwith "Lexer error: impossible escape"
+  
 }
+
 
 rule Token = parse
   | [' ' '\t' '\r'] { Token lexbuf }
@@ -41,16 +58,18 @@ rule Token = parse
   | "(*"            { commentStart := lexbuf.StartPos;
                       commentDepth := 1; 
                       SkipComment lexbuf; Token lexbuf }
-  | "&&"            { AND }
-  | "∧"             { AND }
-  | "||"            { OR  }
-  | "∨"             { OR  }
-  | "="             { EQ  }
-  | "¬"             { NOT }
+  | "&&"            { AND  }
+  | "∧"             { AND  }
+  | "||"            { OR   }
+  | "∨"             { OR   }
+  | "="             { EQ   }
+  | '+'             { PLUS }
+  | "¬"             { NOT  }
   | '('             { LPAR }
   | ')'             { RPAR }
-  | eof             { EOF }
-  | _               { failwith "Lexer error: illegal symbol" }
+  | '"'             { CSTATOM (String [] lexbuf) }
+  | eof             { EOF  }
+  | _               { failwith "Lexer error: illegal symbol, yo" }
 
 and SkipComment = parse
     "*)"            { commentDepth := !commentDepth - 1;  
@@ -62,4 +81,20 @@ and SkipComment = parse
    | eof            { failwith "Lexer error: unterminated comment" }
    | _              { SkipComment lexbuf }
 
-
+and String chars = parse 
+  | '"'
+      { Microsoft.FSharp.Core.String.concat "" (List.map string (List.rev chars)) }
+  | '\\' ['\\' '"' 'a' 'b' 't' 'n' 'v' 'f' 'r']
+      { String (cEscape (lexemeAsString lexbuf) :: chars) lexbuf }
+  | "''" 
+      { String ('\'' :: chars) lexbuf }
+  | '\\'
+      { failwith "Lexer error: illegal escape sequence" }
+  | (eof | '\026')
+      { failwith "Lexer error: unterminated string" }
+  | ['\n' '\r']
+      { failwith "Lexer error: newline in string" }
+  | ['\000'-'\031' '\127' '\255']
+      { failwith "Lexer error: invalid character in string" }
+  | _
+      { String (char (lexbuf.LexemeChar 0) :: chars) lexbuf }
