@@ -5,9 +5,15 @@ type token =
   | RPAR
   | OR
   | AND
+  | EQ
+  | LET
+  | IN
+  | END
   | FALSE
   | NOT
   | TRUE
+  | VAL
+  | NAME of (string)
   | CSTBOOL of (bool)
   | CSTATOM of (string)
   | CSTINT of (int)
@@ -17,9 +23,15 @@ type tokenId =
     | TOKEN_RPAR
     | TOKEN_OR
     | TOKEN_AND
+    | TOKEN_EQ
+    | TOKEN_LET
+    | TOKEN_IN
+    | TOKEN_END
     | TOKEN_FALSE
     | TOKEN_NOT
     | TOKEN_TRUE
+    | TOKEN_VAL
+    | TOKEN_NAME
     | TOKEN_CSTBOOL
     | TOKEN_CSTATOM
     | TOKEN_CSTINT
@@ -42,4 +54,4 @@ val prodIdxToNonTerminal: int -> nonTerminalId
 
 /// This function gets the name of a token as a string
 val token_to_string: token -> string
-val Main : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (Fol.Expr) 
+val Main : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (LCI.Fol.expr) 

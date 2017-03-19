@@ -4,45 +4,62 @@
     osto@itu.dk * 2016-02-06
   *)
 
- open Fol;
+ open LCI.Fol;
 %}
 %token <int> CSTINT
 %token <string> CSTATOM
 %token <bool> CSTBOOL
+%token <string> NAME
 
-%token FALSE NOT TRUE
-%token OR AND
+%token LET IN END FALSE NOT TRUE VAL
+%token OR AND EQ
 %token LPAR RPAR 
 %token EOF
              
-%left OR AND            
+%left OR AND 
+%left EQ 
 
 %nonassoc NOT           
 
 %start Main
-%type <Fol.Expr> Main 
+%type <LCI.Fol.expr> Main 
 
 %%
 
 Main:
-  Expr EOF                              { $1                   }
+  Expr EOF                        
+    { $1                   }
 ;
 
 Expr:
-  AtExpr                                {$1                    }   
-  | Expr OR  Expr                       { Dyadic("|",$1, $3)   }
-  | Expr AND Expr                       { Dyadic("&",$1, $3)   }
-  | NOT Expr                            { Monadic("~",$2)      }
+  AtExpr                                
+    { $1                   }
+  | Expr OR  Expr                       
+    { Dyadic("∨",$1, $3)   }
+  | Expr AND Expr                       
+    { Dyadic("∧",$1, $3)   }
+  | NOT Expr                            
+    { Monadic("¬",$2)      }
 ;
 
 AtExpr:
-  Const                                 {$1                    } 
-  |LPAR Expr RPAR                       {$2                    }
+  Const                                 
+    { $1                   }
+  | NAME                                
+    { Var $1               }
+  | LET NAME EQ Expr IN Expr END        
+    { Let($2,$4,$6)        }
+  | LPAR Expr RPAR                      
+    { $2                   }
+;
 
 Const:
-  CSTATOM                               { Atom($1)             }
-  | CSTINT                              { CInt($1)             }
-  | CSTBOOL                             { CBool($1)            }
+  CSTATOM                               
+    { Atom($1)             }
+  | CSTINT                              
+    { CInt($1)             }
+  | CSTBOOL                             
+    { CBool($1)            }
 ;
    
 

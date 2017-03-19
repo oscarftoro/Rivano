@@ -21,12 +21,15 @@ let commentDepth = ref 0;  (* Current comment nesting *)
 
 let keyword s =
     match s with
+    | "let"   -> LET
+    | "in"    -> IN
+    | "end"   -> END
     | "not"   -> NOT
-    | "and"   -> AND  
+    | "and"   -> AND
     | "or"    -> OR
     | "true"  -> CSTBOOL true
     | "false" -> CSTBOOL false
-    | _       -> CSTATOM s
+    | _       -> NAME s
 }
 
 rule Token = parse
@@ -42,7 +45,8 @@ rule Token = parse
   | "∧"             { AND }
   | "||"            { OR  }
   | "∨"             { OR  }
-  | "not"           { NOT }
+  | "="             { EQ  }
+  | "¬"             { NOT }
   | '('             { LPAR }
   | ')'             { RPAR }
   | eof             { EOF }

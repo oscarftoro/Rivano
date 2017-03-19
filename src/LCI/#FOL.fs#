@@ -1,0 +1,76 @@
+//namespace LCI
+
+/// A tiny language to express First Order Logic formulas
+///
+/// ## Example
+///
+///     let h = Library.hello 1
+///     printfn "%d" h
+///
+  
+module LCI.Fol
+
+(* Abstract Syntax *)
+//type Prop = CBool of bool
+type Expr = 
+          | CInt    of int 
+          | CBool   of bool       
+          | CString of string
+          | Var     of string
+          | Val     of string * Expr
+          | Atom    of string
+          | Dyadic  of string * Expr * Expr
+          | Monadic of string * Expr
+
+(*environment, knowledge base or context *)
+type 't env = (string * 't) list
+
+(* value types of the environment*)
+type value = 
+  | Int     of int
+  | Boolean of bool 
+  | String  of string
+ 
+
+/// Check variable `x` in the environment `env`*)
+/// returns the `value` of the variable
+let rec lookup x env = 
+  match env with
+  | [] -> failwith (x + "variable not found in the environment")
+  | (y,v)::t -> if x=y then v else lookup  x t;;
+
+let bl2i (b:bool) : int =  if b then 1 else 0
+
+  /// Evaluator of logical expressions
+  /// Returns integers
+  /// ## Parameters
+  ///  - `e` - expresion
+  ///  - `env` - environment or context
+
+let rec eval (e: Expr) (env: value env) : int =
+  match e with
+  | CInt    i    -> i
+  | CBool   b    -> if b then 1 else 0
+  | Var     x    ->
+      match lookup x env with
+      | Int i     -> i
+      | Boolean b -> bl2i(b)
+      | String  _ -> 0 (*not supported yet*)
+  | Val (s,v)     ->
+      let newEnv = (s,v) :: env
+      e
+  | Dyadic(op, e1, e2) -> 
+      let i1 = eval e1 env
+      let i2 = eval e2 env
+      match op with
+      | "&" -> if i1 = 1 then i2 else 0 
+      | "|" -> if i1 = 1 then 1 else i2 
+      | _   -> failwith ("unsupported dyadic operator")
+  | Atom _        -> 0 (* not implemented *)
+  | CString _     -> 0 (* not sure if necessary *)
+  | Monadic (_,e) ->   (*negation operator*)    
+     if (eval e env = 1) then 0 else 1
+
+
+
+

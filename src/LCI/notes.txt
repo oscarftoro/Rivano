@@ -1,4 +1,4 @@
-﻿fsharpi -r lib/FsLexYacc.Runtime.dll src/LCI/FOL.fs src/LCI/FolPar.fs src/LCI/FolPar.fs
+﻿fsharpi -r lib/FsLexYacc.Runtime.dll src/LCI/FOL.fs src/LCI/FolPar.fs src/LCI/FolLex.fs src/LCI/Parse.fs
 
 fsharpi -r ~/Apps/FsLexYacc/bin/FsLexYacc.Runtime.dll FOL.fs FolPar.fs FolLex.fs Parse.fs
 
