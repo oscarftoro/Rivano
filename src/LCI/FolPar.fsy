@@ -7,19 +7,19 @@
  open LCI.Fol;
 %}
 %token <int> CSTINT
-%token <string> CSTATOM
+
 %token <bool> CSTBOOL
-%token <string> NAME
+%token <string> CSTSTRING NAME
 
 %token LET IN END FALSE NOT TRUE VAL
 %token OR AND EQ ATOM PLUS MINUS MUL
-%token LPAR RPAR QUOT IMPL
+%token LPAR RPAR QUOT IMPL FORALL PERIOD
 %token EOF
-             
-%left OR AND 
-%left PLUS
-%left EQ 
 
+%right IMPL
+%left AND             
+%left OR 
+%left PLUS EQ MUL MINUS
 %nonassoc NOT           
 
 %start Main
@@ -55,21 +55,26 @@ Expr:
 AtExpr:
   Const                                 
     { $1                   }
+  | ATOM Expr                               
+    { Atom($2)             }  
   | NAME                                
     { Var $1               }
   | LET NAME EQ Expr IN Expr END        
     { Let($2, $4, $6)      }
+  | FORALL NAME PERIOD Expr 
+    { ForAll($2, $4)       }    
   | LPAR Expr RPAR                      
     { $2                   }
 ;
 
 Const:
-  ATOM CSTATOM                                 
-    { Atom($2)             }
+ 
   | CSTINT                              
     { CInt($1)             }
   | CSTBOOL                             
     { CBool($1)            }  
+  | CSTSTRING
+    { CString($1)          }  
 ;
    
 

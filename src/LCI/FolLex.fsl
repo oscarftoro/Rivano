@@ -29,6 +29,7 @@ let keyword s =
     | "not"     -> NOT
     | "and"     -> AND
     | "implies" -> IMPL
+    | "forall"  -> FORALL
     | "or"      -> OR
     | "true"    -> CSTBOOL true
     | "false"   -> CSTBOOL false
@@ -59,20 +60,22 @@ rule Token = parse
   | "(*"            { commentStart := lexbuf.StartPos;
                       commentDepth := 1; 
                       SkipComment lexbuf; Token lexbuf }
-  | "&&"            { AND   }
-  | "∧"             { AND   }
-  | "||"            { OR    }
-  | "∨"             { OR    }
-  | "=>"            { IMPL  }
-  | "→"             { IMPL  }
-  | "¬"             { NOT   }
-  | "="             { EQ    }
-  | '+'             { PLUS  }
-  | '-'             { MINUS }
-  | '*'             { MUL   }
-  | '('             { LPAR  }
-  | ')'             { RPAR  }
-  | '"'             { CSTATOM (String [] lexbuf) }
+  | "&&"            { AND    }
+  | "∧"             { AND    }
+  | "||"            { OR     }
+  | "∨"             { OR     }
+  | "=>"            { IMPL   }
+  | "→"             { IMPL   }
+  | "∀"             { FORALL }
+  | "."             { PERIOD }
+  | "¬"             { NOT    }
+  | "="             { EQ     }
+  | '+'             { PLUS   }
+  | '-'             { MINUS  }
+  | '*'             { MUL    }
+  | '('             { LPAR   }
+  | ')'             { RPAR   }
+  | '"'             { CSTSTRING (String [] lexbuf) }
   | eof             { EOF   }
   | _               { failwith "Lexer error: illegal symbol, yo" }
 

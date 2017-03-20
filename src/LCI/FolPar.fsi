@@ -5,6 +5,8 @@ type token =
   | RPAR
   | QUOT
   | IMPL
+  | FORALL
+  | PERIOD
   | OR
   | AND
   | EQ
@@ -19,9 +21,9 @@ type token =
   | NOT
   | TRUE
   | VAL
+  | CSTSTRING of (string)
   | NAME of (string)
   | CSTBOOL of (bool)
-  | CSTATOM of (string)
   | CSTINT of (int)
 type tokenId = 
     | TOKEN_EOF
@@ -29,6 +31,8 @@ type tokenId =
     | TOKEN_RPAR
     | TOKEN_QUOT
     | TOKEN_IMPL
+    | TOKEN_FORALL
+    | TOKEN_PERIOD
     | TOKEN_OR
     | TOKEN_AND
     | TOKEN_EQ
@@ -43,9 +47,9 @@ type tokenId =
     | TOKEN_NOT
     | TOKEN_TRUE
     | TOKEN_VAL
+    | TOKEN_CSTSTRING
     | TOKEN_NAME
     | TOKEN_CSTBOOL
-    | TOKEN_CSTATOM
     | TOKEN_CSTINT
     | TOKEN_end_of_input
     | TOKEN_error

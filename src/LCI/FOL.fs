@@ -14,10 +14,12 @@ module LCI.Fol
 //type Prop = CBool of bool
 type expr = 
           | CInt    of int 
-          | CBool   of bool       
+          | CBool   of bool  
+          | CString of string     
           | Var     of string
           | Let     of string * expr * expr
-          | Atom    of string
+          | ForAll  of string * expr
+          | Atom    of expr
           | Dyadic  of string * expr * expr
           | Monadic of string * expr
 
@@ -87,6 +89,10 @@ let rec eval (e: expr) (env: value env) : value =
      let xVal =  eval eRhs env
      let bodyEnv = (s,xVal) :: env
      eval lBody bodyEnv     
+  | ForAll(b,eBody) ->
+    let (v1,v2) = 
+      (eval eBody ((b,Boolean 0) :: env), eval eBody ((b,Boolean 1) :: env))
+    getDyadic v1 v2 "∧"
   | Dyadic(op, e1, e2) -> 
     let (b1, b2) = (eval e1 env,eval e2 env)
     getDyadic b1 b2 op 
