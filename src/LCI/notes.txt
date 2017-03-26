@@ -46,3 +46,45 @@ val it : expr = Let ("x",Atom "poet",Dyadic ("∨",Var "x",Atom "rich"))
 val it : expr = Let ("x",Atom "musician",Dyadic ("→",Var "x",Atom "rich"))
 
 
+Atomic formulas (atom)
+
+> fromString("\"holi\"");;
+val it : expr = CString "holi"
+> fromString("\"3\"");;   
+val it : expr = CString "3"
+> fromString("atom \"3\"");;
+val it : expr = Atom (CString "3")
+> fromString("atom 3 + 2");;
+val it : expr = Atom (Dyadic ("+",CInt 3,CInt 2))
+> fromString("atom 3 + 2 * 3");;
+val it : expr = Atom (Dyadic ("*",Dyadic ("+",CInt 3,CInt 2),CInt 3))
+> fromString("atom true or false");;
+val it : expr = Atom (Dyadic ("∨",CBool true,CBool false))
+
+Equality and ForAll
+
+> open Parse;;
+> open LCI.Fol
+- ;;
+> fromString("2 = 2");;
+val it : expr = Dyadic ("=",CInt 2,CInt 2)
+> let eq = fromString("2 = 2");;
+
+val eq : expr = Dyadic ("=",CInt 2,CInt 2)
+
+> eval eq [];;
+val it : value = Boolean 1
+> fromString("forall x. x = 2");;
+val it : expr = ForAll ("x",Dyadic ("=",Var "x",CInt 2))
+> let fa = fromString("forall x. x = 2");;
+
+val fa : expr = ForAll ("x",Dyadic ("=",Var "x",CInt 2))
+
+> eval fa [];;                            
+val it : value = Boolean 0
+
+
+Lists
+------
+
+fromString("let x = [1,2,3,4] in x end");;

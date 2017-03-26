@@ -30,6 +30,7 @@ let keyword s =
     | "and"     -> AND
     | "implies" -> IMPL
     | "forall"  -> FORALL
+    | "exists"  -> EXISTS
     | "or"      -> OR
     | "true"    -> CSTBOOL true
     | "false"   -> CSTBOOL false
@@ -67,6 +68,10 @@ rule Token = parse
   | "=>"            { IMPL   }
   | "→"             { IMPL   }
   | "∀"             { FORALL }
+  | "∃"             { EXISTS }
+  | "["             { LSQBR  }
+  | "]"             { RSQBR  }
+  | ","             { COMMA  }
   | "."             { PERIOD }
   | "¬"             { NOT    }
   | "="             { EQ     }

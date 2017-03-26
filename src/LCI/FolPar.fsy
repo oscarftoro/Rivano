@@ -11,15 +11,17 @@
 %token <bool> CSTBOOL
 %token <string> CSTSTRING NAME
 
-%token LET IN END FALSE NOT TRUE VAL
+%token LET IN END FALSE NOT TRUE VAL 
 %token OR AND EQ ATOM PLUS MINUS MUL
 %token LPAR RPAR QUOT IMPL FORALL PERIOD
-%token EOF
+%token EXISTS LSQBR RSQBR COMMA EOF
 
+%right EQ
 %right IMPL
-%left AND             
 %left OR 
-%left PLUS EQ MUL MINUS
+%left AND  
+%left PLUS  MINUS
+%left MUL
 %nonassoc NOT           
 
 %start Main
@@ -41,8 +43,10 @@ Expr:
     { Dyadic("∧", $1, $3)  }
   | NOT Expr                            
     { Monadic("¬", $2)     }
+  | Expr EQ Expr
+    { Dyadic("=",$1,$3)    }  
   | Expr IMPL Expr
-    { Dyadic("→", $1, $3)   }  
+    { Dyadic("→", $1, $3)  }  
   | Expr PLUS Expr 
     { Dyadic("+", $1, $3)  }  
   | Expr MINUS Expr 
@@ -61,11 +65,25 @@ AtExpr:
     { Var $1               }
   | LET NAME EQ Expr IN Expr END        
     { Let($2, $4, $6)      }
+  | LSQBR List RSQBR  
+    { List($2)             }
   | FORALL NAME PERIOD Expr 
     { ForAll($2, $4)       }    
+  | EXISTS NAME PERIOD Expr
+    { Exists($2, $4)       }  
   | LPAR Expr RPAR                      
     { $2                   }
 ;
+
+List:
+   /*empty */ 
+    { []                   }
+  | Const 
+    { [$1]                 }
+  | Const COMMA List
+    { $1 :: $3             }    
+  
+  ;
 
 Const:
  

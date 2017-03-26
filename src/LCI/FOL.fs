@@ -19,6 +19,8 @@ type expr =
           | Var     of string
           | Let     of string * expr * expr
           | ForAll  of string * expr
+          | List    of expr list 
+          | Exists  of string * expr
           | Atom    of expr
           | Dyadic  of string * expr * expr
           | Monadic of string * expr
@@ -62,7 +64,9 @@ let getDyadic (v1 : value) (v2: value) (op: string): value =
   | "∨" -> 
     bool2Boolean (getBool v1 || getBool v2) 
   | "→" ->
-    bool2Boolean (not (getBool v1) || getBool v2)  
+    bool2Boolean (not (getBool v1) || getBool v2)
+  | "=" ->
+    bool2Boolean (v1 = v2)    
   | "+" ->
     int2Int (getInt v1 + getInt v2)
   | "-" ->
@@ -93,6 +97,11 @@ let rec eval (e: expr) (env: value env) : value =
     let (v1,v2) = 
       (eval eBody ((b,Boolean 0) :: env), eval eBody ((b,Boolean 1) :: env))
     getDyadic v1 v2 "∧"
+  | Exists(b,eBody) ->
+    let (v1,v2) = 
+      (eval eBody ((b,Boolean 0) :: env), eval eBody ((b,Boolean 1) :: env))
+    getDyadic v1 v2 "∨"
+
   | Dyadic(op, e1, e2) -> 
     let (b1, b2) = (eval e1 env,eval e2 env)
     getDyadic b1 b2 op 
