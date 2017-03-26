@@ -18,7 +18,7 @@ type expr =
           | CString of string     
           | Var     of string
           | Let     of string * expr * expr
-          | ForAll  of string * expr
+          | ForAll  of string * string * expr
           | List    of expr list 
           | Exists  of string * expr
           | Atom    of expr
@@ -31,7 +31,8 @@ type Boolean = Boolean of bool
 (* return and value types of the environment *)
 type value = 
   | Int     of int
-  | Boolean of int             
+  | Boolean of int          
+ // | List    of value list    
 
 /// Check variable `x` in the environment `env`*)
 /// returns the `value` of the variable
@@ -44,7 +45,7 @@ let rec lookup x env =
 //unwrapper Boolean b -> bool
 let getBool(b: value) : bool = 
   match b with
-  | Boolean b -> if b = 1 then true else false
+  | Boolean b -> b = 1
   | Int     _ -> failwith("Integer value in getBool, yo")
 //unwrapper Integer i -> int
 let getInt (i: value) : int =
@@ -89,13 +90,14 @@ let rec eval (e: expr) (env: value env) : value =
       match lookup x env with
       | Int i     -> Int i
       | Boolean b -> Boolean b
+      
   | Let (s,eRhs,lBody) -> 
      let xVal =  eval eRhs env
      let bodyEnv = (s,xVal) :: env
      eval lBody bodyEnv     
-  | ForAll(b,eBody) ->
+  | ForAll(b,l,eBody) ->
     let (v1,v2) = 
-      (eval eBody ((b,Boolean 0) :: env), eval eBody ((b,Boolean 1) :: env))
+      (eval eBody ((b,Boolean 1) :: env), eval eBody ((b,Boolean 1) :: env))
     getDyadic v1 v2 "∧"
   | Exists(b,eBody) ->
     let (v1,v2) = 

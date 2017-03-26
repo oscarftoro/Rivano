@@ -67,8 +67,8 @@ AtExpr:
     { Let($2, $4, $6)      }
   | LSQBR List RSQBR  
     { List($2)             }
-  | FORALL NAME PERIOD Expr 
-    { ForAll($2, $4)       }    
+  | FORALL NAME IN NAME PERIOD Expr 
+    { ForAll($2,$4,$6)     }    
   | EXISTS NAME PERIOD Expr
     { Exists($2, $4)       }  
   | LPAR Expr RPAR                      
