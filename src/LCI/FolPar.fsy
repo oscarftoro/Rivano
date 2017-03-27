@@ -1,6 +1,6 @@
 ﻿%{
  (* File Fun/FunPar.fsy 
-    Parser for a small First Order Logic Language;
+    Parser for a tiny First Order Logic Language;
     osto@itu.dk * 2016-02-06
   *)
 
@@ -72,9 +72,9 @@ AtExpr:
   | LSQBR List RSQBR  
     { CList($2)            }
   | FORALL NAME IN NAME PERIOD Expr 
-    { ForAll($2,$4,$6)     }    
-  | EXISTS NAME PERIOD Expr
-    { Exists($2, $4)       }  
+    { UniQt("∧",$2,$4,$6)  }    
+  | EXISTS NAME IN NAME PERIOD Expr
+    { UniQt("∨",$2,$4,$6)  }  
   | LPAR Expr RPAR                      
     { $2                   }
 ;

@@ -101,7 +101,7 @@ fromString("let x = [1,2,3,4] in x end");;
 fromString("let x = [true, false,false,true] in x end");
 
 
-ForAll
+ForAll(∀)
 ------
 > open Parse;;
 > open LCI.Fol;; 
@@ -188,3 +188,36 @@ val test : expr =
 
 > eval test [];;
 val it : Value = Boolean 1
+
+THERE EXISTS(∃)
+------------------
+> let fa = fromString("let X = [1,2,3,4] in forall x in X. x > 0 end");;
+
+val fa : expr =
+  Let
+    ("X",CList [CInt 1; CInt 2; CInt 3; CInt 4],
+     UniQt ("∧","x","X",Dyadic (">",Var "x",CInt 0)))
+
+> eval fa [];;                                                          
+val it : Value = Boolean 1
+> let fa = fromString("let X = [1,2,3,4] in exists x in X. x = 0 end");;
+
+val fa : expr =
+  Let
+    ("X",CList [CInt 1; CInt 2; CInt 3; CInt 4],
+     UniQt ("∨","x","X",Dyadic ("=",Var "x",CInt 0)))
+
+> eval fa [];;                                                          
+val it : Value = Boolean 0
+> let fa = fromString("let X = [1,2,3,4] in exists x in X. x = 3 end");;
+
+val fa : expr =
+  Let
+    ("X",CList [CInt 1; CInt 2; CInt 3; CInt 4],
+     UniQt ("∨","x","X",Dyadic ("=",Var "x",CInt 3)))
+
+> eval fa [];;                                                          
+val it : Value = Boolean 1
+
+
+

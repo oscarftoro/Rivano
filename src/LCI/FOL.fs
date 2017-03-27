@@ -22,9 +22,9 @@ type expr =
           | CList   of expr list         
           | Var     of string
           | Let     of string * expr * expr
-          | ForAll  of string * string * expr
-          | ForAllL of string * expr list * expr    
-          | Exists  of string * expr
+          | UniQt   of string * string * string * expr
+          | UniQtL  of string * string * expr list * expr    
+          | Exists  of string * string * expr
           | Atom    of expr
           | Dyadic  of string * expr * expr
           | Monadic of string * expr
@@ -109,30 +109,26 @@ let rec eval (e: expr) (env: Value env) : Value =
      let xVal =  eval eRhs env
      let bodyEnv = (s,xVal) :: env
      eval lBody bodyEnv     
-  | ForAll(x,s,eBody) ->   
+  | UniQt(u,x,s,eBody) ->   
     let l1 = match lookup s env with
              | VList l -> l
              | Boolean _ -> failwith ("Boolean when list expected error in ForAll,yo")
              | Int  _    -> failwith ("Int when list expected in forAll, yo")
 
-    env |>  eval (ForAllL (x, l1, eBody))
-  | ForAllL(x, l, eBody) ->
+    env |>  eval (UniQtL (u,x, l1, eBody))
+  | UniQtL(u,x, l, eBody) ->
     match l with  
     | h :: t -> 
       let h1 = match h with
                | CBool b -> bool2Boolean b
                | CInt  i -> Int i
                | CList l -> VList l
-               | _       -> failwith("ForAllL error in head of list") 
+               | _       -> failwith("Universal Quantifier error in head of list") 
 
-      getDyadic (eval eBody ((x,h1) :: env)) (eval (ForAllL (x,t,eBody)) env) "∧"
+      getDyadic (eval eBody ((x,h1) :: env)) (eval (UniQtL (u,x,t,eBody)) env) u
     | []      -> eval eBody ((x,Boolean 1) :: env)
     
-  | Exists(b,eBody) ->
-    let (v1,v2) = 
-      (eval eBody ((b,Boolean 0) :: env), eval eBody ((b,Boolean 1) :: env))
-    getDyadic v1 v2 "∨"
-
+       
   | Dyadic(op, e1, e2) -> 
     let (b1, b2) = (eval e1 env,eval e2 env)
     getDyadic b1 b2 op 
