@@ -75,6 +75,7 @@ rule Token = parse
   | "."             { PERIOD }
   | "¬"             { NOT    }
   | "="             { EQ     }
+  | ">"             { GRT    }
   | '+'             { PLUS   }
   | '-'             { MINUS  }
   | '*'             { MUL    }

@@ -78,6 +78,8 @@ let getDyadic (v1 : Value) (v2: Value) (op: string): Value =
     bool2Boolean (not (getBool v1) || getBool v2)
   | "=" ->
     bool2Boolean (v1 = v2)    
+  | ">" ->
+    bool2Boolean (v1 > v2)  
   | "+" ->
     int2Int (getInt v1 + getInt v2)
   | "-" ->

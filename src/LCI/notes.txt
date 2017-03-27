@@ -123,3 +123,44 @@ val test : expr =
 > eval test;;
 val it : (Value env -> Value) = <fun:it@11>
 > eval test [] ;;
+
+Greater Than (>)
+----------------
+> open Parse;;
+> open LCI.Fol
+
+> fromString("12 > 3");;
+val it : expr = Dyadic (">",CInt 12,CInt 3)
+> let test = fromString("12 > 3");;
+
+val test : expr = Dyadic (">",CInt 12,CInt 3)
+
+> eval test [];;
+val it : Value = Boolean 1
+
+> fromString("12 > 3");;
+val it : expr = Dyadic (">",CInt 12,CInt 3)
+> let test = fromString("12 > 3");;
+
+val test : expr = Dyadic (">",CInt 12,CInt 3)
+
+> eval test [];;
+val it : Value = Boolean 1
+> let test = fromString("let X = [1,2,3,4] in forall x in X. x > 0 end");;
+
+val test : expr =
+  Let
+    ("X",CList [CInt 1; CInt 2; CInt 3; CInt 4],
+     ForAll ("x","X",Dyadic (">",Var "x",CInt 0)))
+
+> eval test [];;
+val it : Value = Boolean 1
+> let test = fromString("let X = [1,2,3,4] in forall x in X. x > 5 end");;
+
+val test : expr =
+  Let
+    ("X",CList [CInt 1; CInt 2; CInt 3; CInt 4],
+     ForAll ("x","X",Dyadic (">",Var "x",CInt 5)))
+
+> eval test [];;
+val it : Value = Boolean 0

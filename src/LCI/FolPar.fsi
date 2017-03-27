@@ -25,6 +25,7 @@ type token =
   | NOT
   | TRUE
   | VAL
+  | GRT
   | CSTSTRING of (string)
   | NAME of (string)
   | CSTBOOL of (bool)
@@ -55,6 +56,7 @@ type tokenId =
     | TOKEN_NOT
     | TOKEN_TRUE
     | TOKEN_VAL
+    | TOKEN_GRT
     | TOKEN_CSTSTRING
     | TOKEN_NAME
     | TOKEN_CSTBOOL
