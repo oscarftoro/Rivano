@@ -18,6 +18,7 @@ type token =
   | PLUS
   | MINUS
   | MUL
+  | LT
   | LET
   | IN
   | END
@@ -49,6 +50,7 @@ type tokenId =
     | TOKEN_PLUS
     | TOKEN_MINUS
     | TOKEN_MUL
+    | TOKEN_LT
     | TOKEN_LET
     | TOKEN_IN
     | TOKEN_END

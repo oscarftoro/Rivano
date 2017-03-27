@@ -164,3 +164,27 @@ val test : expr =
 
 > eval test [];;
 val it : Value = Boolean 0
+
+Less Than (>)
+-------------
+open Parse;;  fromString("12 < 3");;
+
+> let test = fromString("let X = [1,2,3,4] in forall x in X. x < 0 end");;
+
+val test : expr =
+  Let
+    ("X",CList [CInt 1; CInt 2; CInt 3; CInt 4],
+     ForAll ("x","X",Dyadic ("<",Var "x",CInt 0)))
+
+> eval test [];;
+val it : Value = Boolean 0
+
+> let test = fromString("let X = [1,2,3,4] in forall x in X. x > 0 end");;
+
+val test : expr =
+  Let
+    ("X",CList [CInt 1; CInt 2; CInt 3; CInt 4],
+     ForAll ("x","X",Dyadic (">",Var "x",CInt 0)))
+
+> eval test [];;
+val it : Value = Boolean 1

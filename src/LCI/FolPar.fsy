@@ -12,7 +12,7 @@
 %token <string> CSTSTRING NAME 
 
 %token LET IN END FALSE NOT TRUE VAL GRT
-%token OR AND EQ ATOM PLUS MINUS MUL
+%token OR AND EQ ATOM PLUS MINUS MUL LT
 %token LPAR RPAR QUOT IMPL FORALL PERIOD
 %token EXISTS LSQBR RSQBR COMMA EOF
 
@@ -22,7 +22,7 @@
 %left AND  
 %left PLUS  MINUS
 %left MUL
-%nonassoc NOT GRT         
+%nonassoc NOT GRT LT      
 
 %start Main
 %type <LCI.Fol.expr> Main 
@@ -47,6 +47,8 @@ Expr:
     { Dyadic("=", $1, $3)  }  
   | Expr GRT Expr 
     { Dyadic(">", $1, $3)  }  
+  | Expr LT Expr 
+    { Dyadic("<", $1, $3)  }    
   | Expr IMPL Expr
     { Dyadic("→", $1, $3)  }  
   | Expr PLUS Expr 
