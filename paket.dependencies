@@ -1,25 +1,6 @@
-source https://nuget.org/api/v2
-
-nuget FsCheck
-nuget FsCheck.NUnit
-nuget FSharp.Core redirects: force
-nuget FsLexYacc 7.0.5
-nuget FsLexYacc.Runtime 7.0.5
-nuget NUnit
-nuget System.IO
-nuget System.Runtime
-
-group Build
-  source https://nuget.org/api/v2
-  
-  nuget SourceLink.Fake
-  nuget FAKE
-  nuget FSharp.Formatting
-
-  github fsharp/FAKE modules/Octokit/Octokit.fsx
-
-group Test
-  source https://nuget.org/api/v2
-  
-  nuget NUnit ~> 2
-  nuget NUnit.Runners ~> 2
+source https://www.nuget.org/api/v2
+nuget Expecto
+nuget FAKE
+nuget FSharp.Core
+nuget FsLexYacc
+nuget FsLexYacc.Runtime

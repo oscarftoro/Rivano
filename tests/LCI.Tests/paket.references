@@ -1,6 +1,0 @@
-FSharp.Core
-FsLexYacc
-FsLexYacc.Runtime
-group Test
-NUnit
-NUnit.Runners

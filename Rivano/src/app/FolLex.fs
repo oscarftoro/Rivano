@@ -1,4 +1,4 @@
-# 1 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 1 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
  
  (* File Fun/Funlex.fsl 
     Lexer for a tiny First Order Logic language  
@@ -51,7 +51,7 @@ let cEscape s =
   | _      -> failwith "Lexer error: impossible escape"
 
 
-# 54 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 54 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
 let trans : uint16[] array = 
     [| 
     (* State 0 *)
@@ -172,224 +172,224 @@ and String chars (lexbuf : Microsoft.FSharp.Text.Lexing.LexBuffer<_>) = _fslex_S
 and _fslex_Token  _fslex_state lexbuf =
   match _fslex_tables.Interpret(_fslex_state,lexbuf) with
   | 0 -> ( 
-# 56 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 56 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      Token lexbuf 
-# 177 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 177 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 1 -> ( 
-# 57 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 57 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      lexbuf.EndPos <- lexbuf.EndPos.NextLine; Token lexbuf 
-# 182 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 182 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 2 -> ( 
-# 58 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 58 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      CSTINT (System.Int32.Parse (lexemeAsString lexbuf)) 
-# 187 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 187 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 3 -> ( 
-# 60 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 60 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      keyword (lexemeAsString lexbuf) 
-# 192 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 192 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 4 -> ( 
-# 61 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 61 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      commentStart := lexbuf.StartPos;
                                      commentDepth := 1; 
                                      SkipComment lexbuf; Token lexbuf 
-# 199 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 199 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 5 -> ( 
-# 64 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 64 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      AND    
-# 204 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 204 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 6 -> ( 
-# 65 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 65 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      AND    
-# 209 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 209 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 7 -> ( 
-# 66 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 66 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      OR     
-# 214 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 214 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 8 -> ( 
-# 67 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 67 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      OR     
-# 219 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 219 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 9 -> ( 
-# 68 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 68 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      IMPL   
-# 224 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 224 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 10 -> ( 
-# 69 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 69 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      IMPL   
-# 229 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 229 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 11 -> ( 
-# 70 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 70 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      FORALL 
-# 234 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 234 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 12 -> ( 
-# 71 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 71 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      EXISTS 
-# 239 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 239 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 13 -> ( 
-# 72 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 72 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      LSQBR  
-# 244 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 244 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 14 -> ( 
-# 73 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 73 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      RSQBR  
-# 249 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 249 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 15 -> ( 
-# 74 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 74 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      COMMA  
-# 254 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 254 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 16 -> ( 
-# 75 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 75 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      PERIOD 
-# 259 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 259 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 17 -> ( 
-# 76 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 76 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      NOT    
-# 264 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 264 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 18 -> ( 
-# 77 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 77 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      EQ     
-# 269 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 269 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 19 -> ( 
-# 78 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 78 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      GRT    
-# 274 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 274 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 20 -> ( 
-# 79 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 79 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      LT     
-# 279 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 279 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 21 -> ( 
-# 80 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 80 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      PLUS   
-# 284 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 284 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 22 -> ( 
-# 81 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 81 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      MINUS  
-# 289 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 289 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 23 -> ( 
-# 82 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 82 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      MUL    
-# 294 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 294 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 24 -> ( 
-# 83 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 83 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      LPAR   
-# 299 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 299 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 25 -> ( 
-# 84 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 84 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      RPAR   
-# 304 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 304 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 26 -> ( 
-# 85 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 85 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      CSTSTRING (String [] lexbuf) 
-# 309 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 309 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 27 -> ( 
-# 86 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 86 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      EOF   
-# 314 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 314 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 28 -> ( 
-# 87 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 87 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      failwith "Lexer error: illegal symbol, yo" 
-# 319 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 319 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | _ -> failwith "Token"
 (* Rule SkipComment *)
 and _fslex_SkipComment  _fslex_state lexbuf =
   match _fslex_tables.Interpret(_fslex_state,lexbuf) with
   | 0 -> ( 
-# 90 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 90 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      commentDepth := !commentDepth - 1;  
                                      if !commentDepth = 0 then ()
                                      else SkipComment lexbuf 
                                    
-# 331 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 331 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 1 -> ( 
-# 94 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 94 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      commentDepth := !commentDepth + 1; 
                                      SkipComment lexbuf 
-# 337 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 337 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 2 -> ( 
-# 96 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 96 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      failwith "Lexer error: unterminated comment" 
-# 342 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 342 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 3 -> ( 
-# 97 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 97 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                                      SkipComment lexbuf 
-# 347 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 347 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | _ -> failwith "SkipComment"
 (* Rule String *)
 and _fslex_String chars _fslex_state lexbuf =
   match _fslex_tables.Interpret(_fslex_state,lexbuf) with
   | 0 -> ( 
-# 101 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 101 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                        Microsoft.FSharp.Core.String.concat "" (List.map string (List.rev chars)) 
-# 356 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 356 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 1 -> ( 
-# 103 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 103 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                        String (cEscape (lexemeAsString lexbuf) :: chars) lexbuf 
-# 361 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 361 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 2 -> ( 
-# 105 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 105 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                        String ('\'' :: chars) lexbuf 
-# 366 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 366 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 3 -> ( 
-# 107 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 107 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                        failwith "Lexer error: illegal escape sequence" 
-# 371 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 371 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 4 -> ( 
-# 109 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 109 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                        failwith "Lexer error: unterminated string" 
-# 376 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 376 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 5 -> ( 
-# 111 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 111 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                        failwith "Lexer error: newline in string" 
-# 381 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 381 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 6 -> ( 
-# 113 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 113 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                        failwith "Lexer error: invalid character in string" 
-# 386 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 386 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | 7 -> ( 
-# 115 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fsl"
+# 115 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fsl"
                        String (char (lexbuf.LexemeChar 0) :: chars) lexbuf 
-# 391 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 391 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"
           )
   | _ -> failwith "String"
 
-# 3000000 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/Rivano/src/LCI/FolLex.fs"
+# 3000000 "/home/oscarftoro/Documentos/3.semester/Development/FSharp/riv2/Rivano/Rivano/src/app/FolLex.fs"

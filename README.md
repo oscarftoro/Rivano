@@ -15,13 +15,13 @@ monodevelop.
 to build the parser run on the console...
 
 ```bash
-build parser
+build.sh parser
 ```
 
 the lexer can be built typing:
 
 ```bash
-build lexer
+build.sh lexer
 ```
 
 
