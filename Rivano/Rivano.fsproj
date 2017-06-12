@@ -40,13 +40,23 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
+    <Reference Include="../packages/FsLexYacc.Runtime/lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid10+MonoTouch10/FsLexYacc.Runtime.dll" />
+    <Reference Include="../packages/System.Runtime/ref/net462/System.Runtime.dll" />
+    <Reference Include="../packages/System.IO/lib/net462/System.IO.dll" />
   </ItemGroup>
   <ItemGroup>
+ 
     <Compile Include="src/app/FOL.fs" />
+   <Compile Include="src/app/FolPar.fs" />
+    <Compile Include="src/app/FolLex.fs" />  
+     <Compile Include="src/app/Parse.fs" /> 
     <Compile Include="src/tests/Tests.fs" />
     <Compile Include="src/app/Main.fs" />
     <None Include="App.config" />
+    
+
   </ItemGroup>
+ 
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">14</MinimumVisualStudioVersion>
   </PropertyGroup>

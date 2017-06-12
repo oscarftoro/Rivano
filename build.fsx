@@ -29,7 +29,7 @@ let builder (target : string) =
   let (name,arg1,arg2) =
       match target with
        | "parser" ->
-         let (n,a1,a2) = ("Parser", "--module FolPar ", "FolPar.fsy ")
+         let (n,a1,a2) = ("Parser", "--module FolPar", "FolPar.fsy")
          (n,a1,a2)
        | "lexer"  ->
          let (n,a1,a2) = ("Lexer", " ", "FolLex.fsl --unicode")

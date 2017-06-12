@@ -1,13 +1,13 @@
 ﻿%{
  (* File Fun/FunPar.fsy 
     Parser for a tiny First Order Logic Language;
-    osto@itu.dk * 2016-02-06
+    oscarftoro at protonmail dot com * 2016-02-06
   *)
 
- open LCI.Fol;
+ open Dk.Nqn.Fol;
 %}
 %token <int> CSTINT 
-
+%token <double> CSTDOUBLE
 %token <bool> CSTBOOL 
 %token <string> CSTSTRING NAME 
 
@@ -18,14 +18,16 @@
 
 %right EQ
 %right IMPL
-%left OR 
+%left OR GRT LT
 %left AND  
 %left PLUS  MINUS
 %left MUL
-%nonassoc NOT GRT LT      
+
+%left ATOM
+%nonassoc NOT     
 
 %start Main
-%type <LCI.Fol.expr> Main 
+%type <Dk.Nqn.Fol.expr> Main 
 
 %%
 
@@ -72,9 +74,9 @@ AtExpr:
   | LSQBR List RSQBR  
     { CList($2)            }
   | FORALL NAME IN NAME PERIOD Expr 
-    { UniQt("∧",$2,$4,$6)  }    
+    { Quant("∧",$2,$4,$6)  }
   | EXISTS NAME IN NAME PERIOD Expr
-    { UniQt("∨",$2,$4,$6)  }  
+    { Quant("∨",$2,$4,$6)  }
   | LPAR Expr RPAR                      
     { $2                   }
 ;

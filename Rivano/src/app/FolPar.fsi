@@ -30,6 +30,7 @@ type token =
   | CSTSTRING of (string)
   | NAME of (string)
   | CSTBOOL of (bool)
+  | CSTDOUBLE of (double)
   | CSTINT of (int)
 type tokenId = 
     | TOKEN_EXISTS
@@ -62,6 +63,7 @@ type tokenId =
     | TOKEN_CSTSTRING
     | TOKEN_NAME
     | TOKEN_CSTBOOL
+    | TOKEN_CSTDOUBLE
     | TOKEN_CSTINT
     | TOKEN_end_of_input
     | TOKEN_error
@@ -83,4 +85,4 @@ val prodIdxToNonTerminal: int -> nonTerminalId
 
 /// This function gets the name of a token as a string
 val token_to_string: token -> string
-val Main : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (LCI.Fol.expr) 
+val Main : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (Dk.Nqn.Fol.expr) 
